@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+// MVVM + closures or MVP
 final class AuthViewController: UIViewController {
 
   // MARK: Constants
@@ -58,8 +59,8 @@ private extension AuthViewController {
     textFieldStack.axis = .vertical
     textFieldStack.spacing = AppConstants.normalSpacing
 
-    view.addSubview(textFieldStack)
-    view.addSubview(buttonView)
+    // make extension addSubviews
+    view.addSubviews([textFieldStack, buttonView])
 
 //    loginTextFieldView.snp.makeConstraints {
 //      $0.center.equalToSuperview()
