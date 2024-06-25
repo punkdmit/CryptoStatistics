@@ -10,15 +10,7 @@ import SnapKit
 
 // MARK: - CustomTextFieldDelegate
 protocol CustomTextFieldDelegate: AnyObject {
-  func textFieldDidBeginEditing(_ textField: UITextField)
-  func textFieldDidEndEditing(_ textField: UITextField)
-  func textFieldDidChangeSelection(_ textField: UITextField)
-  func textFieldShouldBeginEditing(_ textField: UITextField)
-  func textField(
-      _ textField: UITextField,
-      shouldChangeCharactersIn range: NSRange,
-      replacementString string: String
-  ) -> Bool
+  func textFieldFinished()
 }
 
 // MARK: - TextFieldSize
@@ -110,22 +102,21 @@ extension CustomTextField {
 // MARK: - UITextFieldDelegate
 extension CustomTextField: UITextFieldDelegate {
 
-  func textFieldDidBeginEditing(_ textField: UITextField) {
-    customDelegate?.textFieldDidBeginEditing(textField)
-  }
-
-  func textFieldDidEndEditing(_ textField: UITextField) {
-    customDelegate?.textFieldDidEndEditing(textField)
-  }
-
-  func textFieldDidChangeSelection(_ textField: UITextField) {
-    customDelegate?.textFieldDidChangeSelection(textField)
-  }
-
-  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    customDelegate?.textFieldShouldBeginEditing(textField)
-    return true
-  }
+//  func textFieldDidBeginEditing(_ textField: UITextField) {
+//    customDelegate?.textFieldDidBeginEditing(textField)
+//  }
+//
+//  func textFieldDidEndEditing(_ textField: UITextField) {
+//    customDelegate?.textFieldDidEndEditing(textField)
+//  }
+//
+//  func textFieldDidChangeSelection(_ textField: UITextField) {
+//    customDelegate?.textFieldDidChangeSelection(textField)
+//  }
+//
+//  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//    return customDelegate?.textFieldShouldBeginEditing(textField) ?? true
+//  }
 
   func textField(
       _ textField: UITextField,
@@ -133,11 +124,7 @@ extension CustomTextField: UITextFieldDelegate {
       replacementString string: String
   ) -> Bool {
     layer.borderColor = Assets.Colors.white.cgColor
-    return customDelegate?.textField(
-      textField,
-      shouldChangeCharactersIn: range,
-      replacementString: string
-    ) ?? true
+      customDelegate?.textFieldFinished()
   }
 }
 

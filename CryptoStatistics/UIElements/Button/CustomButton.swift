@@ -8,22 +8,6 @@
 import SnapKit
 import UIKit
 
-// MARK: - ButtonSize
-enum ButtonSize {
-  case primary
-}
-
-// MARK: - Internal properties
-extension ButtonSize {
-
-  var height: Int {
-    switch self {
-      case .primary:
-        48
-    }
-  }
-}
-
 // MARK: - ButtonStyle
 enum ButtonStyle {
   case primary
@@ -67,7 +51,22 @@ extension ButtonStyle {
 
 // MARK: - CustomButton
 
+// UIButton.Configuration
+// ButtonSize ButtonStyle are redundant
+
 final class CustomButton: UIButton {
+    
+    // MARK: - ButtonSize
+    enum ButtonSize {
+        case primary
+        
+        var height: Int {
+            switch self {
+            case .primary:
+                48
+            }
+        }
+    }
 
   // MARK: Constants
 
@@ -148,7 +147,6 @@ private extension CustomButton {
 
   func setupUI() {
     layer.borderWidth = style.hasBorder ? Constants.borderWidth : 0
-    layer.cornerRadius = frame.height / 2
     setNotHighlighted()
     configureLayout()
   }

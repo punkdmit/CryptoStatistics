@@ -13,7 +13,7 @@ protocol TextFieldViewDelegate: AnyObject {
     func textFieldDidBeginEditing(_ textField: UITextField)
     func textFieldDidEndEditing(_ textField: UITextField)
     func textFieldDidChangeSelection(_ textField: UITextField)
-    func textFieldShouldBeginEditing(_ textField: UITextField)
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
@@ -46,6 +46,11 @@ final class TextFieldView: UIView {
 
   private lazy var customTextField: CustomTextField = {
     let textField = CustomTextField()
+//      textField.completion = {
+//          // hide error
+//      }
+//      textField.customDelegate = self
+      textField.delegate = self
     return textField
   }()
 
@@ -67,6 +72,8 @@ final class TextFieldView: UIView {
   
 }
 
+// TextFieldView -> CustomTextField -> TextFieldView
+
 extension TextFieldView {
 
   func showError(_ errorMessage: String?) {
@@ -76,7 +83,7 @@ extension TextFieldView {
   }
 }
 
-extension TextFieldView: CustomTextFieldDelegate {
+extension TextFieldView: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     delegate?.textFieldDidBeginEditing(textField)
@@ -90,8 +97,8 @@ extension TextFieldView: CustomTextFieldDelegate {
     delegate?.textFieldDidChangeSelection(textField)
   }
 
-  func textFieldShouldBeginEditing(_ textField: UITextField) {
-    delegate?.textFieldShouldBeginEditing(textField)
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+      delegate?.textFieldShouldBeginEditing(textField) ?? true
   }
   
   func textField(
@@ -116,11 +123,15 @@ private extension TextFieldView {
 
     configureLayout()
   }
+    
+    func hideError() {
+        customTextField.isError = false
+        errorLabel.isHidden = true
+    }
 
   func configureLayout() {
     addSubview(stackView)
-    stackView.addArrangedSubview(customTextField)
-    stackView.addArrangedSubview(errorLabel)
+    stackView.addArrangedSubviews([customTextField, errorLabel])
 
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
