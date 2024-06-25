@@ -10,9 +10,18 @@
 		3F1EC423ABB92B49DD5C8CC5 /* Pods_CryptoStatistics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 713C0C88A26D77B047C7B505 /* Pods_CryptoStatistics.framework */; };
 		F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F859111E2C2713AC0014B560 /* AppDelegate.swift */; };
 		F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911202C2713AC0014B560 /* SceneDelegate.swift */; };
-		F85911232C2713AC0014B560 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911222C2713AC0014B560 /* ViewController.swift */; };
+		F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911222C2713AC0014B560 /* AuthViewController.swift */; };
 		F85911282C2713B10014B560 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F85911272C2713B10014B560 /* Assets.xcassets */; };
 		F859112B2C2713B10014B560 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F859112A2C2713B10014B560 /* Base */; };
+		F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */; };
+		F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234AF2C284F5800831D30 /* Coordinator.swift */; };
+		F8F234B22C28507C00831D30 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B12C28507C00831D30 /* MainCoordinator.swift */; };
+		F8F234B82C28593A00831D30 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B72C28593A00831D30 /* AppConstants.swift */; };
+		F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B92C28597F00831D30 /* Fonts.swift */; };
+		F8F234BC2C285C0300831D30 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234BB2C285C0300831D30 /* Assets.swift */; };
+		F8F234BF2C28615200831D30 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234BE2C28615200831D30 /* CustomTextField.swift */; };
+		F8F234C12C2890D600831D30 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234C02C2890D600831D30 /* TextFieldView.swift */; };
+		F8F234C42C28A14B00831D30 /* Optional+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234C32C28A14B00831D30 /* Optional+extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +31,19 @@
 		F859111B2C2713AC0014B560 /* CryptoStatistics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoStatistics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F859111E2C2713AC0014B560 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F85911202C2713AC0014B560 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F85911222C2713AC0014B560 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F85911222C2713AC0014B560 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		F85911272C2713B10014B560 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F859112A2C2713B10014B560 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F859112C2C2713B10014B560 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		F8F234AF2C284F5800831D30 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		F8F234B12C28507C00831D30 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		F8F234B72C28593A00831D30 /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		F8F234B92C28597F00831D30 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		F8F234BB2C285C0300831D30 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		F8F234BE2C28615200831D30 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		F8F234C02C2890D600831D30 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		F8F234C32C28A14B00831D30 /* Optional+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,14 +96,103 @@
 		F859111D2C2713AC0014B560 /* CryptoStatistics */ = {
 			isa = PBXGroup;
 			children = (
-				F859111E2C2713AC0014B560 /* AppDelegate.swift */,
-				F85911202C2713AC0014B560 /* SceneDelegate.swift */,
-				F85911222C2713AC0014B560 /* ViewController.swift */,
-				F85911272C2713B10014B560 /* Assets.xcassets */,
-				F85911292C2713B10014B560 /* LaunchScreen.storyboard */,
+				F8F234C22C28A13C00831D30 /* Extension */,
+				F8F234BD2C28612B00831D30 /* UIElements */,
+				F8F234B52C28590E00831D30 /* Sources */,
+				F8F234AE2C284F4900831D30 /* Coordinator */,
+				F8F234C52C28A9D600831D30 /* Module */,
+				F8F234AD2C284A1F00831D30 /* Supporting+files */,
 				F859112C2C2713B10014B560 /* Info.plist */,
 			);
 			path = CryptoStatistics;
+			sourceTree = "<group>";
+		};
+		F8E71B482C29BC0500E7C94C /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				F8F234BE2C28615200831D30 /* CustomTextField.swift */,
+				F8F234C02C2890D600831D30 /* TextFieldView.swift */,
+			);
+			path = TextField;
+			sourceTree = "<group>";
+		};
+		F8E71B492C29BC0E00E7C94C /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		F8F234AD2C284A1F00831D30 /* Supporting+files */ = {
+			isa = PBXGroup;
+			children = (
+				F859111E2C2713AC0014B560 /* AppDelegate.swift */,
+				F85911202C2713AC0014B560 /* SceneDelegate.swift */,
+				F85911272C2713B10014B560 /* Assets.xcassets */,
+				F85911292C2713B10014B560 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting+files";
+			sourceTree = "<group>";
+		};
+		F8F234AE2C284F4900831D30 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				F8F234AF2C284F5800831D30 /* Coordinator.swift */,
+				F8F234B12C28507C00831D30 /* MainCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		F8F234B32C28588C00831D30 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				F8F234B42C2858AD00831D30 /* View */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		F8F234B42C2858AD00831D30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F85911222C2713AC0014B560 /* AuthViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F8F234B52C28590E00831D30 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				F8F234B72C28593A00831D30 /* AppConstants.swift */,
+				F8F234B92C28597F00831D30 /* Fonts.swift */,
+				F8F234BB2C285C0300831D30 /* Assets.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		F8F234BD2C28612B00831D30 /* UIElements */ = {
+			isa = PBXGroup;
+			children = (
+				F8E71B492C29BC0E00E7C94C /* Button */,
+				F8E71B482C29BC0500E7C94C /* TextField */,
+			);
+			path = UIElements;
+			sourceTree = "<group>";
+		};
+		F8F234C22C28A13C00831D30 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F8F234C32C28A14B00831D30 /* Optional+extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		F8F234C52C28A9D600831D30 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				F8F234B32C28588C00831D30 /* Auth */,
+			);
+			path = Module;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,9 +327,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F85911232C2713AC0014B560 /* ViewController.swift in Sources */,
+				F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */,
+				F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */,
+				F8F234BC2C285C0300831D30 /* Assets.swift in Sources */,
+				F8F234B82C28593A00831D30 /* AppConstants.swift in Sources */,
+				F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */,
 				F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */,
+				F8F234C12C2890D600831D30 /* TextFieldView.swift in Sources */,
+				F8F234B22C28507C00831D30 /* MainCoordinator.swift in Sources */,
+				F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */,
+				F8F234C42C28A14B00831D30 /* Optional+extension.swift in Sources */,
 				F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */,
+				F8F234BF2C28615200831D30 /* CustomTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

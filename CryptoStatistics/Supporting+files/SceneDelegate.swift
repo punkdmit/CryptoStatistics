@@ -12,11 +12,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-      guard let windowScene = (scene as? UIWindowScene) else { return }
-      window = UIWindow(windowScene: windowScene)
-      let vc = ViewController()
-      window?.rootViewController = UINavigationController(rootViewController: vc)
-      window?.makeKeyAndVisible()
+    guard let windowScene = (scene as? UIWindowScene) else { return }
+    window = UIWindow(windowScene: windowScene)
+    if let window {
+      let coordinator = MainCoordinator(navigationController: UINavigationController())
+      coordinator.start(in: window)
+    }
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,6 +48,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
 }
-
