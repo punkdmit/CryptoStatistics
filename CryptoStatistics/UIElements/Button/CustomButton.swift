@@ -10,152 +10,152 @@ import UIKit
 
 // MARK: - ButtonSize
 enum ButtonSize {
-  case primary
+    case primary
 }
 
 // MARK: - Internal properties
 extension ButtonSize {
 
-  var height: Int {
-    switch self {
-      case .primary:
-        48
+    var height: Int {
+        switch self {
+        case .primary:
+            48
+        }
     }
-  }
 }
 
 // MARK: - ButtonStyle
 enum ButtonStyle {
-  case primary
+    case primary
 }
 
 // MARK: - Internal properties
 extension ButtonStyle {
 
-  var normalBackgroundColor: UIColor {
-    switch self {
-    case .primary:
-      Assets.Colors.white
+    var normalBackgroundColor: UIColor {
+        switch self {
+        case .primary:
+            Assets.Colors.white
+        }
     }
-  }
 
-  var highlightedBackgroundColor: UIColor {
-    switch self {
-    case .primary:
-      Assets.Colors.grayLight
+    var highlightedBackgroundColor: UIColor {
+        switch self {
+        case .primary:
+            Assets.Colors.grayLight
+        }
     }
-  }
 
-  var borderColor: CGColor {
-    switch self {
-    case .primary:
-      Assets.Colors.grayLight.cgColor
+    var borderColor: CGColor {
+        switch self {
+        case .primary:
+            Assets.Colors.grayLight.cgColor
+        }
     }
-  }
 
-  var labelColor: UIColor {
-    switch self {
-    case .primary:
-      Assets.Colors.dark
+    var labelColor: UIColor {
+        switch self {
+        case .primary:
+            Assets.Colors.dark
+        }
     }
-  }
 
-  var hasBorder: Bool {
-    self != .primary
-  }
+    var hasBorder: Bool {
+        self != .primary
+    }
 }
 
 // MARK: - CustomButton
 
 final class CustomButton: UIButton {
 
-  // MARK: Constants
+    // MARK: Constants
 
-  private enum Constants {
-    static let borderWidth: CGFloat = 1
-  }
-
-  // MARK: Internal Properties
-
-  var title: String = "" {
-    didSet {
-      setTitle(title)
+    private enum Constants {
+        static let borderWidth: CGFloat = 1
     }
-  }
 
-  override var isHighlighted: Bool {
-    didSet {
-      isHighlighted
-      ? setHighlighted()
-      : setNotHighlighted()
+    // MARK: Internal Properties
+
+    var title: String = "" {
+        didSet {
+            setTitle(title)
+        }
     }
-  }
 
-  // MARK: Private Properties
+    override var isHighlighted: Bool {
+        didSet {
+            isHighlighted
+            ? setHighlighted()
+            : setNotHighlighted()
+        }
+    }
 
-  private let style: ButtonStyle
-  private let size: ButtonSize
+    // MARK: Private Properties
 
-  // MARK: Initialization
+    private let style: ButtonStyle
+    private let size: ButtonSize
 
-  init(
-    style: ButtonStyle = .primary,
-    size: ButtonSize = .primary
-  ) {
-    self.style = style
-    self.size = size
-    super.init(frame: .zero)
-    self.setupUI()
-  }
+    // MARK: Initialization
 
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+    init(
+        style: ButtonStyle = .primary,
+        size: ButtonSize = .primary
+    ) {
+        self.style = style
+        self.size = size
+        super.init(frame: .zero)
+        self.setupUI()
+    }
 
-  // MARK: Life Cycle
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    layer.cornerRadius = bounds.height / 2
-  }
+    // MARK: Life Cycle
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.height / 2
+    }
 
 }
 
 // MARK: Private methods
 private extension CustomButton {
 
-  func setTitle(_ title: String) {
-    setAttributedTitle(NSAttributedString(
-      string: title,
-      attributes: [.font: SemiboldFont.h3, .foregroundColor: style.labelColor]
-    ), for: .normal)
+    func setTitle(_ title: String) {
+        setAttributedTitle(NSAttributedString(
+            string: title,
+            attributes: [.font: SemiboldFont.h3, .foregroundColor: style.labelColor]
+        ), for: .normal)
 
-    setAttributedTitle(NSAttributedString(
-      string: title,
-      attributes: [.font: SemiboldFont.h3, .foregroundColor: style.labelColor]
-    ), for: .highlighted)
-  }
-
-  func setNotHighlighted() {
-    backgroundColor = style.normalBackgroundColor
-    layer.borderColor = style.borderColor
-  }
-
-  func setHighlighted() {
-    backgroundColor = style.highlightedBackgroundColor
-    layer.borderColor = style.borderColor
-  }
-
-  func setupUI() {
-    layer.borderWidth = style.hasBorder ? Constants.borderWidth : 0
-    layer.cornerRadius = frame.height / 2
-    setNotHighlighted()
-    configureLayout()
-  }
-
-  func configureLayout() {
-    snp.makeConstraints {
-      $0.height.equalTo(size.height)
+        setAttributedTitle(NSAttributedString(
+            string: title,
+            attributes: [.font: SemiboldFont.h3, .foregroundColor: style.labelColor]
+        ), for: .highlighted)
     }
-  }
+
+    func setNotHighlighted() {
+        backgroundColor = style.normalBackgroundColor
+        layer.borderColor = style.borderColor
+    }
+
+    func setHighlighted() {
+        backgroundColor = style.highlightedBackgroundColor
+        layer.borderColor = style.borderColor
+    }
+
+    func setupUI() {
+        layer.borderWidth = style.hasBorder ? Constants.borderWidth : 0
+        layer.cornerRadius = frame.height / 2
+        setNotHighlighted()
+        configureLayout()
+    }
+
+    func configureLayout() {
+        snp.makeConstraints {
+            $0.height.equalTo(size.height)
+        }
+    }
 }

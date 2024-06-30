@@ -7,14 +7,15 @@
 
 import UIKit
 
+// MARK: - Coordinator
 protocol Coordinator {
+    
+    var childCoordinators: [Coordinator] { get set }
+    var navigationController: UINavigationController { get set }
 
-  var childCoordinators: [Coordinator] { get set }
-  var navigationController: UINavigationController { get set }
-  
-  func start(in window: UIWindow?)
+    func start(in window: UIWindow)
 }
 
 extension Coordinator {
-  func start(in window: UIWindow? = nil) { }
+    func start(in window: UIWindow? = nil) { }
 }

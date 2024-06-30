@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		3F1EC423ABB92B49DD5C8CC5 /* Pods_CryptoStatistics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 713C0C88A26D77B047C7B505 /* Pods_CryptoStatistics.framework */; };
+		F82410D72C2C30B60056F332 /* UIStackView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82410D62C2C30B60056F332 /* UIStackView+extension.swift */; };
+		F82410D92C2C331B0056F332 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82410D82C2C331B0056F332 /* UIView+extension.swift */; };
+		F82725472C31773F006AAE30 /* TextFieldError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82725462C31773F006AAE30 /* TextFieldError.swift */; };
+		F827254A2C319977006AAE30 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82725492C319977006AAE30 /* StorageService.swift */; };
+		F827254C2C31A72C006AAE30 /* CoinsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F827254B2C31A72C006AAE30 /* CoinsListViewModel.swift */; };
+		F8445A132C2D62E10091BA34 /* CoinsListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A122C2D62E10091BA34 /* CoinsListCoordinator.swift */; };
+		F8445A152C2D65B50091BA34 /* UIWindow+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A142C2D65B50091BA34 /* UIWindow+extension.swift */; };
+		F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */; };
+		F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */; };
 		F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F859111E2C2713AC0014B560 /* AppDelegate.swift */; };
 		F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911202C2713AC0014B560 /* SceneDelegate.swift */; };
 		F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911222C2713AC0014B560 /* AuthViewController.swift */; };
@@ -15,7 +24,7 @@
 		F859112B2C2713B10014B560 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F859112A2C2713B10014B560 /* Base */; };
 		F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */; };
 		F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234AF2C284F5800831D30 /* Coordinator.swift */; };
-		F8F234B22C28507C00831D30 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B12C28507C00831D30 /* MainCoordinator.swift */; };
+		F8F234B22C28507C00831D30 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B12C28507C00831D30 /* AuthCoordinator.swift */; };
 		F8F234B82C28593A00831D30 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B72C28593A00831D30 /* AppConstants.swift */; };
 		F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B92C28597F00831D30 /* Fonts.swift */; };
 		F8F234BC2C285C0300831D30 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234BB2C285C0300831D30 /* Assets.swift */; };
@@ -28,6 +37,15 @@
 		25B05515B5622CD2BC4E298E /* Pods-CryptoStatistics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoStatistics.release.xcconfig"; path = "Target Support Files/Pods-CryptoStatistics/Pods-CryptoStatistics.release.xcconfig"; sourceTree = "<group>"; };
 		2BE5E28244C33BC0FC2C5F81 /* Pods-CryptoStatistics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoStatistics.debug.xcconfig"; path = "Target Support Files/Pods-CryptoStatistics/Pods-CryptoStatistics.debug.xcconfig"; sourceTree = "<group>"; };
 		713C0C88A26D77B047C7B505 /* Pods_CryptoStatistics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptoStatistics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F82410D62C2C30B60056F332 /* UIStackView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+extension.swift"; sourceTree = "<group>"; };
+		F82410D82C2C331B0056F332 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extension.swift"; sourceTree = "<group>"; };
+		F82725462C31773F006AAE30 /* TextFieldError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldError.swift; sourceTree = "<group>"; };
+		F82725492C319977006AAE30 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		F827254B2C31A72C006AAE30 /* CoinsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListViewModel.swift; sourceTree = "<group>"; };
+		F8445A122C2D62E10091BA34 /* CoinsListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListCoordinator.swift; sourceTree = "<group>"; };
+		F8445A142C2D65B50091BA34 /* UIWindow+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+extension.swift"; sourceTree = "<group>"; };
+		F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListViewController.swift; sourceTree = "<group>"; };
+		F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		F859111B2C2713AC0014B560 /* CryptoStatistics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoStatistics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F859111E2C2713AC0014B560 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F85911202C2713AC0014B560 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,7 +55,7 @@
 		F859112C2C2713B10014B560 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		F8F234AF2C284F5800831D30 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
-		F8F234B12C28507C00831D30 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		F8F234B12C28507C00831D30 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		F8F234B72C28593A00831D30 /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		F8F234B92C28597F00831D30 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		F8F234BB2C285C0300831D30 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
@@ -75,6 +93,55 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F82725482C319951006AAE30 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F82725492C319977006AAE30 /* StorageService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		F827254D2C31D65F006AAE30 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				F82725462C31773F006AAE30 /* TextFieldError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		F827254E2C32013F006AAE30 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F827254F2C320145006AAE30 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F827254B2C31A72C006AAE30 /* CoinsListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F8445A182C2D6C620091BA34 /* Coins */ = {
+			isa = PBXGroup;
+			children = (
+				F827254E2C32013F006AAE30 /* View */,
+				F827254F2C320145006AAE30 /* ViewModel */,
+			);
+			path = Coins;
+			sourceTree = "<group>";
+		};
+		F8445A192C2DAB910091BA34 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		F85911122C2713AC0014B560 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +167,7 @@
 				F8F234BD2C28612B00831D30 /* UIElements */,
 				F8F234B52C28590E00831D30 /* Sources */,
 				F8F234AE2C284F4900831D30 /* Coordinator */,
+				F82725482C319951006AAE30 /* Service */,
 				F8F234C52C28A9D600831D30 /* Module */,
 				F8F234AD2C284A1F00831D30 /* Supporting+files */,
 				F859112C2C2713B10014B560 /* Info.plist */,
@@ -139,7 +207,8 @@
 			isa = PBXGroup;
 			children = (
 				F8F234AF2C284F5800831D30 /* Coordinator.swift */,
-				F8F234B12C28507C00831D30 /* MainCoordinator.swift */,
+				F8F234B12C28507C00831D30 /* AuthCoordinator.swift */,
+				F8445A122C2D62E10091BA34 /* CoinsListCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -148,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				F8F234B42C2858AD00831D30 /* View */,
+				F8445A192C2DAB910091BA34 /* ViewModel */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -166,6 +236,7 @@
 				F8F234B72C28593A00831D30 /* AppConstants.swift */,
 				F8F234B92C28597F00831D30 /* Fonts.swift */,
 				F8F234BB2C285C0300831D30 /* Assets.swift */,
+				F827254D2C31D65F006AAE30 /* Error */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -183,6 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				F8F234C32C28A14B00831D30 /* Optional+extension.swift */,
+				F82410D62C2C30B60056F332 /* UIStackView+extension.swift */,
+				F82410D82C2C331B0056F332 /* UIView+extension.swift */,
+				F8445A142C2D65B50091BA34 /* UIWindow+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -191,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				F8F234B32C28588C00831D30 /* Auth */,
+				F8445A182C2D6C620091BA34 /* Coins */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -327,18 +402,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */,
 				F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */,
+				F8445A152C2D65B50091BA34 /* UIWindow+extension.swift in Sources */,
+				F82410D72C2C30B60056F332 /* UIStackView+extension.swift in Sources */,
 				F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */,
 				F8F234BC2C285C0300831D30 /* Assets.swift in Sources */,
 				F8F234B82C28593A00831D30 /* AppConstants.swift in Sources */,
+				F8445A132C2D62E10091BA34 /* CoinsListCoordinator.swift in Sources */,
+				F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */,
+				F82725472C31773F006AAE30 /* TextFieldError.swift in Sources */,
 				F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */,
 				F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */,
+				F827254A2C319977006AAE30 /* StorageService.swift in Sources */,
 				F8F234C12C2890D600831D30 /* TextFieldView.swift in Sources */,
-				F8F234B22C28507C00831D30 /* MainCoordinator.swift in Sources */,
+				F8F234B22C28507C00831D30 /* AuthCoordinator.swift in Sources */,
 				F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */,
+				F82410D92C2C331B0056F332 /* UIView+extension.swift in Sources */,
 				F8F234C42C28A14B00831D30 /* Optional+extension.swift in Sources */,
 				F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */,
 				F8F234BF2C28615200831D30 /* CustomTextField.swift in Sources */,
+				F827254C2C31A72C006AAE30 /* CoinsListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

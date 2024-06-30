@@ -8,8 +8,8 @@
 import Foundation
 
 extension Optional where Wrapped == String {
-  
-  var isNotEmpty: Bool {
-    return self != nil || self != ""
-  }
+
+    var isNotEmpty: Bool {
+        return self != nil || self != ""
+    }
 }
