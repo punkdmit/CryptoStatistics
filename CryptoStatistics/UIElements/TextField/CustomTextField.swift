@@ -125,6 +125,22 @@ extension CustomTextField: UITextFieldDelegate {
         customDelegate?.textFieldFinished()
         return customDelegate?.textField(textField, shouldChangeCharactersIn: range, replacementString: string) ?? true
     }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldBeginEditing \(String(describing: textField.text))")
+        return true
+    }// return NO to disallow editing.
+
+//    func textFieldDidBeginEditing(_ textField: UITextField) // became first responder
+//
+//    @available(iOS 2.0, *)
+//    optional func textFieldShouldEndEditing(_ textField: UITextField) -> Bool // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
+//
+//    @available(iOS 2.0, *)
+//    optional func textFieldDidEndEditing(_ textField: UITextField) // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
+//
+//    @available(iOS 10.0, *)
+//    optional func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) // if implemented, called in place of textFieldDidEndEditing:
 }
 
 // MARK: - Private methods

@@ -43,9 +43,10 @@ extension CoinsListCoordinator {
         let authCoordinator = AuthCoordinator(navigationController: navigationController)
         let authViewModel = AuthViewModel(authCoordinator: authCoordinator)
         let authViewController = AuthViewController(authViewModel: authViewModel)
-        transition.type = .push
-        transition.subtype = .fromLeft
-        navigationController.view.layer.add(transition, forKey: kCATransition)
-        navigationController.setViewControllers([authViewController], animated: false)
+//        transition.type = .push
+//        transition.subtype = .fromLeft
+//        navigationController.view.layer.add(transition, forKey: kCATransition)
+        navigationController.switchRootController(to: authViewController, animated: true)
+//        setViewControllers([authViewController], animated: false)
     }
 }
