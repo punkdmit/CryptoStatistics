@@ -8,7 +8,7 @@
 import Foundation
 
 protocol AuthViewModelDelegate: AnyObject {
-    func showError(with message: String?)
+    func showError(with message: String?, _ key: TextFieldType)
 }
 
 final class AuthViewModel {
@@ -21,18 +21,7 @@ final class AuthViewModel {
     var userLogin: String? = ""
     var userPassword: String? = ""
 
-    weak var delegate: AuthViewModelDelegate? {
-        didSet {
-            delegate?.showError(with: errorMessage/*, key: key*/)
-        }
-    }
-
-    private var errorMessage: String? {
-        didSet {
-            delegate?.showError(with: errorMessage/*, key: key*/)
-        }
-    }
-//    private var key: TextFieldType
+    weak var delegate: AuthViewModelDelegate?
 
     private let mainCoordinator: AuthCoordinator?
 
@@ -51,14 +40,20 @@ extension AuthViewModel {
 
 extension AuthViewModel: AuthViewControllerDelegate {
 
-    func didTapButton() throws {
-        guard userLogin == DefaultValues.email else {
-            throw TextFieldError.loginError
-//            return
+    func didTapButton() {
+        var hasError = false
+        if userLogin != DefaultValues.email {
+            delegate?.showError(with: "userLogin", .login)
+            hasError = true
         }
-        guard userPassword == DefaultValues.password else {
-            throw TextFieldError.passwordError
-//            return
+        
+        if userPassword != DefaultValues.password {
+            delegate?.showError(with: "userPassword", .password)
+            hasError = true
+        }
+        
+        if hasError {
+            return
         }
         moveToCoinsListViewController()
         StorageService.shared.save(isAuth: true)

@@ -35,7 +35,7 @@ extension StorageService {
     }
 
     /// проверяем авториз или нет
-    func load() -> Bool? {
+    func load() -> Bool {
         queue.sync {
             guard let isAuth = UserDefaults.standard.object(forKey: .key) as? Bool else { return false }
             return isAuth

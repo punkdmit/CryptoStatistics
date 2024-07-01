@@ -93,7 +93,7 @@ extension AuthViewController: TextFieldViewDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let inputText = (textField.text as? NSString)?.replacingCharacters(in: range, with: string) // норм?
-
+        
         if let customTextField = textField as? CustomTextField {
             switch customTextField.key {
             case .login:
@@ -111,12 +111,13 @@ extension AuthViewController: TextFieldViewDelegate {
 //MARK: - AuthViewModelDelegate
 extension AuthViewController: AuthViewModelDelegate {
 
-//    func showError(with message: String?, key: TextFieldType) {
-//
-//    }
-
-    func showError(with message: String?) {
-        
+    func showError(with message: String?, _ key: TextFieldType) {
+        switch key {
+        case .login:
+            loginTextFieldView.showError(with: message)
+        case .password:
+            passwordTextFieldView.showError(with: message)
+        }
     }
 }
 
@@ -128,7 +129,7 @@ extension AuthViewController: AuthViewControllerDelegate {
         do {
             try authViewControllerDelegate?.didTapButton()
         } catch {
-            
+           print(error)
         }
     }
 }
