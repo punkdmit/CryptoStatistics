@@ -14,7 +14,7 @@
 		F827254A2C319977006AAE30 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82725492C319977006AAE30 /* StorageService.swift */; };
 		F827254C2C31A72C006AAE30 /* CoinsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F827254B2C31A72C006AAE30 /* CoinsListViewModel.swift */; };
 		F8445A132C2D62E10091BA34 /* CoinsListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A122C2D62E10091BA34 /* CoinsListCoordinator.swift */; };
-		F8445A152C2D65B50091BA34 /* UIWindow+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A142C2D65B50091BA34 /* UIWindow+extension.swift */; };
+		F8445A152C2D65B50091BA34 /* UINavigationController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A142C2D65B50091BA34 /* UINavigationController+extension.swift */; };
 		F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */; };
 		F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */; };
 		F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F859111E2C2713AC0014B560 /* AppDelegate.swift */; };
@@ -43,7 +43,7 @@
 		F82725492C319977006AAE30 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		F827254B2C31A72C006AAE30 /* CoinsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListViewModel.swift; sourceTree = "<group>"; };
 		F8445A122C2D62E10091BA34 /* CoinsListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListCoordinator.swift; sourceTree = "<group>"; };
-		F8445A142C2D65B50091BA34 /* UIWindow+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+extension.swift"; sourceTree = "<group>"; };
+		F8445A142C2D65B50091BA34 /* UINavigationController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+extension.swift"; sourceTree = "<group>"; };
 		F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListViewController.swift; sourceTree = "<group>"; };
 		F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		F859111B2C2713AC0014B560 /* CryptoStatistics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoStatistics.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -256,7 +256,7 @@
 				F8F234C32C28A14B00831D30 /* Optional+extension.swift */,
 				F82410D62C2C30B60056F332 /* UIStackView+extension.swift */,
 				F82410D82C2C331B0056F332 /* UIView+extension.swift */,
-				F8445A142C2D65B50091BA34 /* UIWindow+extension.swift */,
+				F8445A142C2D65B50091BA34 /* UINavigationController+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -404,7 +404,7 @@
 			files = (
 				F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */,
 				F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */,
-				F8445A152C2D65B50091BA34 /* UIWindow+extension.swift in Sources */,
+				F8445A152C2D65B50091BA34 /* UINavigationController+extension.swift in Sources */,
 				F82410D72C2C30B60056F332 /* UIStackView+extension.swift in Sources */,
 				F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */,
 				F8F234BC2C285C0300831D30 /* Assets.swift in Sources */,

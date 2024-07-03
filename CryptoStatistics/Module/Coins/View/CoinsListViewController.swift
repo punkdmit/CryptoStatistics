@@ -40,7 +40,6 @@ final class CoinsListViewController: UIViewController {
 
     init(coinsListViewModel: CoinsListViewModel) {
         self.coinsListViewModel = coinsListViewModel
-        delegate = self.coinsListViewModel
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TextFieldError: Error {
-    case loginError
-    case passwordError
+enum TextFieldError: String, Error {
+    case loginError = "Неверный логин"
+    case passwordError = "Неверный пароль"
 }

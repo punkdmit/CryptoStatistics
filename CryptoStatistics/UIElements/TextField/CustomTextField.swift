@@ -10,14 +10,13 @@ import SnapKit
 
 // MARK: - CustomTextFieldDelegate
 protocol CustomTextFieldDelegate: AnyObject {
-    func textFieldFinished()
+//    func textFieldFinished()
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool
-
-    //  func textFieldDidChange(_ textField: UITextField)
+    func textFieldDidEndEditing(_ textField: UITextField)
 }
 
 enum TextFieldType {
@@ -71,8 +70,9 @@ final class CustomTextField: UITextField {
 
     var isError = false {
         didSet {
-            guard isError else { return }
-            layer.borderColor = Assets.Colors.red.cgColor
+            layer.borderColor = isError 
+            ? Assets.Colors.red.cgColor
+            : Assets.Colors.white.cgColor
         }
     }
 
@@ -89,6 +89,7 @@ final class CustomTextField: UITextField {
         self.size = size
         self.key = key
         super.init(frame: .zero)
+        delegate = self
         setupUI()
     }
 
@@ -121,9 +122,20 @@ extension CustomTextField: UITextFieldDelegate {
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        layer.borderColor = Assets.Colors.white.cgColor
-        customDelegate?.textFieldFinished()
-        return customDelegate?.textField(textField, shouldChangeCharactersIn: range, replacementString: string) ?? true
+        return customDelegate?.textField(
+            textField,
+            shouldChangeCharactersIn: range,
+            replacementString: string
+        ) ?? true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        customDelegate?.textFieldDidEndEditing(textField)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
@@ -131,7 +143,6 @@ extension CustomTextField: UITextFieldDelegate {
 private extension CustomTextField {
 
     func setupUI() {
-        delegate = self
         layer.cornerRadius = Constants.boarderRadius
         layer.borderWidth = Constants.borderWidth
         layer.borderColor = Assets.Colors.white.cgColor

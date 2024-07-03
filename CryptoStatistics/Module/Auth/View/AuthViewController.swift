@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-//MARK: - AuthViewControllerDelegate
-protocol AuthViewControllerDelegate: AnyObject {
-    func didTapButton() throws
-}
+////MARK: - AuthViewControllerDelegate
+//protocol AuthViewControllerDelegate: AnyObject {
+//    func didTapButton() throws
+//}
 
 final class AuthViewController: UIViewController {
 
@@ -27,8 +27,6 @@ final class AuthViewController: UIViewController {
         static let passwordTextFieldText = "Password"
         static let buttonText = "Go"
     }
-
-    weak var authViewControllerDelegate: AuthViewControllerDelegate?
 
     // MARK: private properties
 
@@ -72,7 +70,6 @@ final class AuthViewController: UIViewController {
 
     init(authViewModel: AuthViewModel?) {
         self.authViewModel = authViewModel
-        authViewControllerDelegate = authViewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -85,51 +82,57 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
 }
 
 //MARK: - Internal methods
 extension AuthViewController: TextFieldViewDelegate {
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let inputText = (textField.text as? NSString)?.replacingCharacters(in: range, with: string) // норм?
-
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if let customTextField = textField as? CustomTextField {
             switch customTextField.key {
             case .login:
-                authViewModel?.userLogin = inputText
+                authViewModel?.userLogin = customTextField.text
             case .password:
-                authViewModel?.userPassword = inputText
+                authViewModel?.userPassword = customTextField.text
             default:
-                return false
+                break
             }
         }
-        return true
     }
 }
 
 //MARK: - AuthViewModelDelegate
 extension AuthViewController: AuthViewModelDelegate {
 
-//    func showError(with message: String?, key: TextFieldType) {
-//
-//    }
-
-    func showError(with message: String?) {
-        
+    func showError(with message: String?, _ key: TextFieldType) {
+        switch key {
+        case .login:
+            loginTextFieldView.showError(with: message)
+        case .password:
+            passwordTextFieldView.showError(with: message)
+        }
     }
 }
 
 //MARK: - @objc methods
 @objc
-extension AuthViewController: AuthViewControllerDelegate {
+extension AuthViewController {
 
     func didTapButton() {
         do {
-            try authViewControllerDelegate?.didTapButton()
+            try authViewModel?.didTapButton()
         } catch {
-            
+            print(error)
         }
+    }
+
+    func dismissKeyboard() {
+        // Закрыть клавиатуру
+        view.endEditing(true)
     }
 }
 

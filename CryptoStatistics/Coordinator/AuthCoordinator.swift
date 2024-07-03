@@ -24,9 +24,22 @@ extension AuthCoordinator {
     func start(in window: UIWindow) {
         let authViewModel = AuthViewModel(authCoordinator: self)
         let authViewController = AuthViewController(authViewModel: authViewModel)
+        authViewModel.delegate = authViewController
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         navigationController.pushViewController(authViewController, animated: true)
+    }
+
+    func start() {
+        let authViewModel = AuthViewModel(authCoordinator: self)
+        let authViewController = AuthViewController(authViewModel: authViewModel)
+        authViewModel.delegate = authViewController
+        navigationController.switchRootController(
+            to: [authViewController],
+            animated: true,
+            options: .transitionFlipFromLeft
+        )
+//        navigationController.setViewControllers([authViewController], animated: true)
     }
 
     func goToListViewController() {

@@ -26,13 +26,20 @@ extension CoinsListCoordinator {
     func start() {
         let coinsListViewModel = CoinsListViewModel(coinsListCoordinator: self)
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
-        navigationController.setViewControllers([coinsListViewController], animated: true)
+        coinsListViewController.delegate = coinsListViewModel
+        navigationController.switchRootController(
+            to: [coinsListViewController],
+            animated: true,
+            options: .transitionFlipFromRight
+        )
+//        navigationController.setViewControllers([coinsListViewController], animated: true)
     }
 
     /// метод если пользователь авторизован
     func start(in window: UIWindow) {
         let coinsListViewModel = CoinsListViewModel(coinsListCoordinator: self)
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
+        coinsListViewController.delegate = coinsListViewModel
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         navigationController.pushViewController(coinsListViewController, animated: true)
@@ -41,11 +48,6 @@ extension CoinsListCoordinator {
     /// возвращает на экран авторизации
     func goToAuthViewController() {
         let authCoordinator = AuthCoordinator(navigationController: navigationController)
-        let authViewModel = AuthViewModel(authCoordinator: authCoordinator)
-        let authViewController = AuthViewController(authViewModel: authViewModel)
-        transition.type = .push
-        transition.subtype = .fromLeft
-        navigationController.view.layer.add(transition, forKey: kCATransition)
-        navigationController.setViewControllers([authViewController], animated: false)
+        authCoordinator.start()
     }
 }
