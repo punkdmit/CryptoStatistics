@@ -39,7 +39,6 @@ extension AuthCoordinator {
             animated: true,
             options: .transitionFlipFromLeft
         )
-//        navigationController.setViewControllers([authViewController], animated: true)
     }
 
     func goToListViewController() {

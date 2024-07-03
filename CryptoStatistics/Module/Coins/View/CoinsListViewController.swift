@@ -48,7 +48,7 @@ final class CoinsListViewController: UIViewController {
     }
 }
 
-// MARK: - @objs methods
+// MARK: - @objc methods
 @objc
 private extension CoinsListViewController {
 

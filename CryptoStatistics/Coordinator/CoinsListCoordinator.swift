@@ -32,7 +32,6 @@ extension CoinsListCoordinator {
             animated: true,
             options: .transitionFlipFromRight
         )
-//        navigationController.setViewControllers([coinsListViewController], animated: true)
     }
 
     /// метод если пользователь авторизован

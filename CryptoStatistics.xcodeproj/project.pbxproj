@@ -22,6 +22,8 @@
 		F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911222C2713AC0014B560 /* AuthViewController.swift */; };
 		F85911282C2713B10014B560 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F85911272C2713B10014B560 /* Assets.xcassets */; };
 		F859112B2C2713B10014B560 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F859112A2C2713B10014B560 /* Base */; };
+		F8E412582C35C40B005CD0BD /* CoinsListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */; };
+		F8E4125B2C35C444005CD0BD /* CoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E4125A2C35C444005CD0BD /* CoinTableViewCell.swift */; };
 		F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */; };
 		F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234AF2C284F5800831D30 /* Coordinator.swift */; };
 		F8F234B22C28507C00831D30 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B12C28507C00831D30 /* AuthCoordinator.swift */; };
@@ -53,6 +55,8 @@
 		F85911272C2713B10014B560 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F859112A2C2713B10014B560 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F859112C2C2713B10014B560 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListResponse.swift; sourceTree = "<group>"; };
+		F8E4125A2C35C444005CD0BD /* CoinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinTableViewCell.swift; sourceTree = "<group>"; };
 		F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		F8F234AF2C284F5800831D30 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F8F234B12C28507C00831D30 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 		F8445A182C2D6C620091BA34 /* Coins */ = {
 			isa = PBXGroup;
 			children = (
+				F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */,
+				F8E412592C35C423005CD0BD /* TableView */,
 				F827254E2C32013F006AAE30 /* View */,
 				F827254F2C320145006AAE30 /* ViewModel */,
 			);
@@ -173,6 +179,30 @@
 				F859112C2C2713B10014B560 /* Info.plist */,
 			);
 			path = CryptoStatistics;
+			sourceTree = "<group>";
+		};
+		F8E412562C35BC6E005CD0BD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F8E412592C35C423005CD0BD /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				F8E4125C2C35DE43005CD0BD /* Cell */,
+				F8E412562C35BC6E005CD0BD /* Model */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		F8E4125C2C35DE43005CD0BD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F8E4125A2C35C444005CD0BD /* CoinTableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		F8E71B482C29BC0500E7C94C /* TextField */ = {
@@ -404,6 +434,7 @@
 			files = (
 				F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */,
 				F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */,
+				F8E412582C35C40B005CD0BD /* CoinsListResponse.swift in Sources */,
 				F8445A152C2D65B50091BA34 /* UINavigationController+extension.swift in Sources */,
 				F82410D72C2C30B60056F332 /* UIStackView+extension.swift in Sources */,
 				F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */,
@@ -422,6 +453,7 @@
 				F8F234C42C28A14B00831D30 /* Optional+extension.swift in Sources */,
 				F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */,
 				F8F234BF2C28615200831D30 /* CustomTextField.swift in Sources */,
+				F8E4125B2C35C444005CD0BD /* CoinTableViewCell.swift in Sources */,
 				F827254C2C31A72C006AAE30 /* CoinsListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
