@@ -43,7 +43,6 @@ final class AuthViewController: UIViewController {
         let textFieldView = TextFieldView(key: .login)
         textFieldView.placeholderText = Constants.loginTextFieldText
         textFieldView.delegate = self
-        //    textFieldView.showError("test error")
         return textFieldView
     }()
 
@@ -51,7 +50,6 @@ final class AuthViewController: UIViewController {
         let textFieldView = TextFieldView(key: .password)
         textFieldView.placeholderText = Constants.passwordTextFieldText
         textFieldView.delegate = self
-//        textFieldView.showError(with: "test error")
         return textFieldView
     }()
 

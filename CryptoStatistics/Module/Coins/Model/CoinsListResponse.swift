@@ -8,7 +8,7 @@
 import Foundation
 
 struct CoinsListResponse: Codable {
-    let data: Data
+    let data: Data?
 
     enum CodingKeys: String, CodingKey {
         case data
@@ -17,11 +17,11 @@ struct CoinsListResponse: Codable {
 
 struct Data: Codable {
     let name: String
-    let price: Price
+    let currentPrice: Price
 
     enum CodingKeys: String, CodingKey {
         case name
-        case price = "market_data"
+        case currentPrice = "market_data"
     }
 }
 

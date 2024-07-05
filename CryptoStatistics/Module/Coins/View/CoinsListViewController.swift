@@ -29,12 +29,28 @@ final class CoinsListViewController: UIViewController {
 
     private let coinsListViewModel: CoinsListViewModel?
 
+    // UI Elements
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+        tableView.backgroundColor = Assets.Colors.dark
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(CoinTableViewCell.self, forCellReuseIdentifier: CoinTableViewCell.identifier)
+        return tableView
+    }()
+
     // MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
+
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        tableView.reloadData()
+//    }
 
     // MARK: Initialization
 
@@ -45,6 +61,29 @@ final class CoinsListViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - TableViewDelegate
+
+extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return coinsListViewModel?.array.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinTableViewCell.identifier, for: indexPath) as? CoinTableViewCell else {
+            return UITableViewCell()
+        }
+        if let coin = coinsListViewModel?.array[indexPath.row] { //MARK: добавить конвертацию в локальную модель блоке if
+            cell.configure(with: coin)
+        }
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -61,13 +100,16 @@ private extension CoinsListViewController {
 private extension CoinsListViewController {
 
     func setupUI() {
-        view.backgroundColor = .cyan
         addBarButtonItem()
         configureLayout()
     }
 
     func configureLayout() {
+        view.addSubview(tableView)
 
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     func addBarButtonItem() {

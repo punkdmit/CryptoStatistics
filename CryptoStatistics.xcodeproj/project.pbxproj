@@ -22,8 +22,10 @@
 		F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911222C2713AC0014B560 /* AuthViewController.swift */; };
 		F85911282C2713B10014B560 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F85911272C2713B10014B560 /* Assets.xcassets */; };
 		F859112B2C2713B10014B560 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F859112A2C2713B10014B560 /* Base */; };
+		F87378F22C383E57004BC6A4 /* ModelConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87378F12C383E57004BC6A4 /* ModelConversionService.swift */; };
 		F8E412582C35C40B005CD0BD /* CoinsListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */; };
 		F8E4125B2C35C444005CD0BD /* CoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E4125A2C35C444005CD0BD /* CoinTableViewCell.swift */; };
+		F8E4125E2C35E55B005CD0BD /* CoinsListTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E4125D2C35E55B005CD0BD /* CoinsListTableViewCellModel.swift */; };
 		F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */; };
 		F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234AF2C284F5800831D30 /* Coordinator.swift */; };
 		F8F234B22C28507C00831D30 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F234B12C28507C00831D30 /* AuthCoordinator.swift */; };
@@ -55,8 +57,10 @@
 		F85911272C2713B10014B560 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F859112A2C2713B10014B560 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F859112C2C2713B10014B560 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F87378F12C383E57004BC6A4 /* ModelConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelConversionService.swift; sourceTree = "<group>"; };
 		F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListResponse.swift; sourceTree = "<group>"; };
 		F8E4125A2C35C444005CD0BD /* CoinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinTableViewCell.swift; sourceTree = "<group>"; };
+		F8E4125D2C35E55B005CD0BD /* CoinsListTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListTableViewCellModel.swift; sourceTree = "<group>"; };
 		F8E71B4A2C29BC1F00E7C94C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		F8F234AF2C284F5800831D30 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F8F234B12C28507C00831D30 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				F82725492C319977006AAE30 /* StorageService.swift */,
+				F87378F12C383E57004BC6A4 /* ModelConversionService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -132,8 +137,8 @@
 		F8445A182C2D6C620091BA34 /* Coins */ = {
 			isa = PBXGroup;
 			children = (
-				F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */,
 				F8E412592C35C423005CD0BD /* TableView */,
+				F8E4125F2C35E693005CD0BD /* Model */,
 				F827254E2C32013F006AAE30 /* View */,
 				F827254F2C320145006AAE30 /* ViewModel */,
 			);
@@ -184,6 +189,7 @@
 		F8E412562C35BC6E005CD0BD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F8E4125D2C35E55B005CD0BD /* CoinsListTableViewCellModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -203,6 +209,14 @@
 				F8E4125A2C35C444005CD0BD /* CoinTableViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		F8E4125F2C35E693005CD0BD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F8E412572C35C40B005CD0BD /* CoinsListResponse.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		F8E71B482C29BC0500E7C94C /* TextField */ = {
@@ -440,6 +454,7 @@
 				F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */,
 				F8F234BC2C285C0300831D30 /* Assets.swift in Sources */,
 				F8F234B82C28593A00831D30 /* AppConstants.swift in Sources */,
+				F8E4125E2C35E55B005CD0BD /* CoinsListTableViewCellModel.swift in Sources */,
 				F8445A132C2D62E10091BA34 /* CoinsListCoordinator.swift in Sources */,
 				F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */,
 				F82725472C31773F006AAE30 /* TextFieldError.swift in Sources */,
@@ -451,6 +466,7 @@
 				F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */,
 				F82410D92C2C331B0056F332 /* UIView+extension.swift in Sources */,
 				F8F234C42C28A14B00831D30 /* Optional+extension.swift in Sources */,
+				F87378F22C383E57004BC6A4 /* ModelConversionService.swift in Sources */,
 				F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */,
 				F8F234BF2C28615200831D30 /* CustomTextField.swift in Sources */,
 				F8E4125B2C35C444005CD0BD /* CoinTableViewCell.swift in Sources */,
