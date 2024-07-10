@@ -24,7 +24,11 @@ final class CoinsListCoordinator: Coordinator {
 extension CoinsListCoordinator {
 
     func start() {
-        let coinsListViewModel = CoinsListViewModel(coinsListCoordinator: self)
+        let coinsListViewModel = CoinsListViewModel(
+            coinsListCoordinator: self,
+            modelConversationService: ModelConversionService(),
+            networkService: NetworkService()
+        )
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
         coinsListViewController.delegate = coinsListViewModel
         navigationController.switchRootController(
@@ -36,7 +40,11 @@ extension CoinsListCoordinator {
 
     /// метод если пользователь авторизован
     func start(in window: UIWindow) {
-        let coinsListViewModel = CoinsListViewModel(coinsListCoordinator: self)
+        let coinsListViewModel = CoinsListViewModel(
+            coinsListCoordinator: self,
+            modelConversationService: ModelConversionService(),
+            networkService: NetworkService()
+        )
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
         coinsListViewController.delegate = coinsListViewModel
         window.rootViewController = navigationController

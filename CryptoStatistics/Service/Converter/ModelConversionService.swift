@@ -7,11 +7,12 @@
 
 import Foundation
 
+//MARK: - ModelConversionService
 final class ModelConversionService {
 
-    func convertServerModelToApp(_ coinsListResponse: CoinsListResponse, date: String) -> CoinsListTableViewCellModel? {
+    func convertServerModelToApp(_ coinsListResponse: CoinsListResponse, date: String) -> CoinsListTableViewCellModel {
 
-        var localModel = CoinsListTableViewCellModel(
+        let localModel = CoinsListTableViewCellModel(
             coinName: coinsListResponse.data?.name ?? "",
             currentPrice: getConvertedPrice(coinsListResponse.data?.currentPrice.USDValue ?? 0),
             dayDynamicPercents: getConvertedPercents(coinsListResponse.data?.currentPrice.dayValue.openPrice ?? 0, coinsListResponse.data?.currentPrice.dayValue.closePrice ?? 0),
@@ -21,6 +22,7 @@ final class ModelConversionService {
     }
 }
 
+//MARK: - Private methods
 private extension ModelConversionService {
 
     func getConvertedPercents(_ value1: Double, _ value2: Double) -> Double {

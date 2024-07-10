@@ -29,7 +29,7 @@ final class CoinsListViewController: UIViewController {
 
     private let coinsListViewModel: CoinsListViewModel?
 
-    // UI Elements
+    //MARK: UI Elements
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -45,12 +45,18 @@ final class CoinsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupViewModel()
+        coinsListViewModel?.fetchCoin(with: .coin(name: "btc"))
     }
 
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        tableView.reloadData()
-//    }
+    func setupViewModel() {
+        coinsListViewModel?.didUpdateCoinsList = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 
     // MARK: Initialization
 
@@ -65,18 +71,17 @@ final class CoinsListViewController: UIViewController {
 }
 
 // MARK: - TableViewDelegate
-
 extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coinsListViewModel?.array.count ?? 0
+        return coinsListViewModel?.convertedCoinsArray?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinTableViewCell.identifier, for: indexPath) as? CoinTableViewCell else {
             return UITableViewCell()
         }
-        if let coin = coinsListViewModel?.array[indexPath.row] { //MARK: добавить конвертацию в локальную модель блоке if
+        if let coin = coinsListViewModel?.convertedCoinsArray?[indexPath.row] {
             cell.configure(with: coin)
         }
         return cell
@@ -100,8 +105,8 @@ private extension CoinsListViewController {
 private extension CoinsListViewController {
 
     func setupUI() {
-        addBarButtonItem()
         configureLayout()
+        addBarButtonItem()
     }
 
     func configureLayout() {

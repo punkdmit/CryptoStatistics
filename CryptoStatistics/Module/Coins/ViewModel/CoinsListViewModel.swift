@@ -16,21 +16,49 @@ final class CoinsListViewModel {
         static let outputDateFormat = "dd.MM.yyyy hh:mm a"
     }
 
-    var convertedCoinsArray: [CoinsListTableViewCellModel] = []
+    var convertedCoinsArray: [CoinsListTableViewCellModel]? {
+        didSet {
+            self.didUpdateCoinsList?()
+        }
+    }
+
+    var didUpdateCoinsList: (() -> Void)?
 
     //MARK: Private properties
 
     private let coinsListCoordinator: CoinsListCoordinator?
     private let modelConversationService: ModelConversionService?
+    private let networkService: NetworkService?
 
     //MARK: Initialization
 
     init(
         coinsListCoordinator: CoinsListCoordinator,
-        modelConversationService: ModelConversionService
+        modelConversationService: ModelConversionService,
+        networkService: NetworkService
     ) {
         self.coinsListCoordinator = coinsListCoordinator
         self.modelConversationService = modelConversationService
+        self.networkService = networkService
+    }
+}
+
+//MARK: - Networking methods
+extension CoinsListViewModel {
+
+    func fetchCoin(with endpoint: Endpoint) {
+        networkService?.getData(with: endpoint.url) { [weak self] (result: Result<CoinsListResponse, NetworkError>) in
+            guard let self else { return }
+            switch result {
+            case .success(let result):
+                let coinsListTableViewCellModel = convertToLocaleModel(result)
+                if let coinsListTableViewCellModel = coinsListTableViewCellModel {
+                    convertedCoinsArray?.append(coinsListTableViewCellModel)
+                }
+            case .failure(let error): /// проставить case для каждого типа ошибки !!!
+                print(error)
+            }
+        }
     }
 }
 
@@ -43,6 +71,7 @@ extension CoinsListViewModel: CoinsListViewControllerDelegate {
     }
 }
 
+//MARK: - Private methods
 private extension CoinsListViewModel {
 
     func convertToLocaleModel(_ coinsListResponse: CoinsListResponse) -> CoinsListTableViewCellModel? {
@@ -50,7 +79,6 @@ private extension CoinsListViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.outputDateFormat
         let dateString = dateFormatter.string(from: date)
-//        let localModel = CoinsListTableViewCellModel(from: coinsListResponse, with: dateString)
         let localModel = modelConversationService?.convertServerModelToApp(coinsListResponse, date: dateString)
         return localModel
     }
