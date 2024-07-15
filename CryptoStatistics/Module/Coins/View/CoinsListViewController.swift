@@ -128,13 +128,6 @@ extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if coinsListViewModel?.convertedCoinsArray[section].isEmpty {
-//            return nil
-//        }
-//        return sections[section]
-//    }
 }
 
 // MARK: - @objc methods
