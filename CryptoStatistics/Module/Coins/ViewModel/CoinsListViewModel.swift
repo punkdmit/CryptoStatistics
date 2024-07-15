@@ -37,7 +37,6 @@ final class CoinsListViewModel {
     private let coinsListCoordinator: CoinsListCoordinator?
     private let modelConversationService: ModelConversionService?
     private let networkService: NetworkService?
-
     private let delayManager = DelayManager()
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
@@ -94,7 +93,7 @@ extension CoinsListViewModel {
             }
         }
         if !isRequestEnabled {
-            self.switchViewState?(.failed)
+            self.switchViewState?(.updated)
         }
     }
 

@@ -38,13 +38,12 @@ final class CoinsListViewController: UIViewController {
         static let sortByReducingTitle = "Reducing price changes"
         static let sortByIncreasingTitle = "Increasing price changes"
         static let cancelAction = "Отмена"
-
     }
 
     // MARK: Internal properties
 
     weak var delegate: CoinsListViewControllerDelegate?
-    var currentState: CurrentState
+    var currentState: CurrentState?
 
     // MARK: Private properties
 
@@ -86,40 +85,10 @@ final class CoinsListViewController: UIViewController {
         coinsListViewModel?.fetchCoins(.firstLoad)
     }
 
-    func setupViewModel() {
-        coinsListViewModel?.didUpdateCoinsList = { [weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-
-        coinsListViewModel?.switchViewState = { [weak self] state in
-            guard let self = self else { return }
-            currentState = state
-            switch currentState {
-            case .loading:
-                activityIndicator.startAnimating()
-            case .loaded:
-                activityIndicator.stopAnimating()
-                setupRefreshControl()
-            case .updated:
-                refreshControl.endRefreshing()
-            case .failed:
-                refreshControl.endRefreshing()
-                activityIndicator.stopAnimating()
-            }
-        }
-    }
-
     // MARK: Initialization
 
-    init(
-        coinsListViewModel: CoinsListViewModel,
-        currentState: CurrentState = .loading
-    ) {
+    init(coinsListViewModel: CoinsListViewModel) {
         self.coinsListViewModel = coinsListViewModel
-        self.currentState = currentState
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -145,9 +114,27 @@ extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    ///чтобы при загрузке не было разделителей и пустых ячеек
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if coinsListViewModel?.convertedCoinsArray[indexPath.row] != nil {
+            tableView.separatorStyle = .singleLine
+            return UITableView.automaticDimension
+        } else {
+            tableView.separatorStyle = .none
+            return 0
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if coinsListViewModel?.convertedCoinsArray[section].isEmpty {
+//            return nil
+//        }
+//        return sections[section]
+//    }
 }
 
 // MARK: - @objc methods
@@ -175,7 +162,6 @@ private extension CoinsListViewController {
         addRightBarButtonItem()
         addLeftBarButtonItem()
         setupAlertController()
-//        setupRefreshControl()
     }
 
     func configureLayout() {
@@ -188,6 +174,33 @@ private extension CoinsListViewController {
 
         activityIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
+        }
+    }
+
+    func setupViewModel() {
+        coinsListViewModel?.didUpdateCoinsList = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+
+        coinsListViewModel?.switchViewState = { [weak self] state in
+            guard let self = self else { return }
+            currentState = state
+            switch currentState {
+            case .loading:
+                activityIndicator.startAnimating()
+            case .loaded:
+                activityIndicator.stopAnimating()
+                setupRefreshControl()
+            case .updated:
+                refreshControl.endRefreshing()
+            case .failed:
+                break
+            case .none:
+                break
+            }
         }
     }
 
