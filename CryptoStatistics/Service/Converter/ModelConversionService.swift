@@ -13,9 +13,9 @@ final class ModelConversionService {
     func convertServerModelToApp(_ coinsListResponse: CoinsListResponse, date: String) -> CoinsListTableViewCellModel {
 
         let localModel = CoinsListTableViewCellModel(
-            coinName: coinsListResponse.data?.name ?? "",
-            currentPrice: getConvertedPrice(coinsListResponse.data?.currentPrice.USDValue ?? 0),
-            dayDynamicPercents: getConvertedPercents(coinsListResponse.data?.currentPrice.dayValue.openPrice ?? 0, coinsListResponse.data?.currentPrice.dayValue.closePrice ?? 0),
+            coinName: coinsListResponse.data.name,
+            currentPrice: getConvertedPrice(coinsListResponse.data.currentPrice.USDValue),
+            dayDynamicPercents: getConvertedPercents(coinsListResponse.data.currentPrice.dayValue.closePrice, coinsListResponse.data.currentPrice.dayValue.openPrice),
             date: date
         )
         return localModel
@@ -27,7 +27,7 @@ private extension ModelConversionService {
 
     func getConvertedPercents(_ value1: Double, _ value2: Double) -> Double {
         let temp = (value1 - value2) / value1
-        return (temp * 10).rounded() / 10
+        return (temp * 1000).rounded() / 1000
     }
 
     func getConvertedPrice(_ price: Double) -> Double {

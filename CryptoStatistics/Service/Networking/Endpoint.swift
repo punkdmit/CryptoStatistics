@@ -14,7 +14,7 @@ private struct API {
 }
 
 enum Endpoint {
-    case coin(name: String)
+    case coin(_ name: String)
 }
 
 extension Endpoint {

@@ -39,6 +39,8 @@ class CoinTableViewCell: UITableViewCell {
         return stack
     }()
 
+    private lazy var topStackSeparatorView = UIView()
+
     private lazy var topStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -100,6 +102,21 @@ extension CoinTableViewCell {
         self.dateLabel.text = model.date
         self.percentsLabel.text = Constants.dayChange + "\(model.dayDynamicPercents)%"
         self.percentsLabelColor = (model.dayDynamicPercents > 0) ? Assets.Colors.lime : Assets.Colors.red
+
+//        if let currentPrice = model.currentPrice {
+//                   currentPriceLabel.text = Constants.price + "\(currentPrice)$"
+//               } else {
+//                   currentPriceLabel.text = Constants.price + "-"
+//               }
+//
+//        if let dayDynamicPercents = model.dayDynamicPercents {
+//            percentsLabel.text = Constants.dayChange + "\(dayDynamicPercents)%"
+//            percentsLabelColor = (dayDynamicPercents > 0) ? Assets.Colors.lime : Assets.Colors.red
+//        } else {
+//            percentsLabel.text = Constants.dayChange + "nan%"
+//            percentsLabelColor = Assets.Colors.grayLight
+//        }
+
     }
 }
 
@@ -126,8 +143,8 @@ private extension CoinTableViewCell {
     func configureLayout() {
         addSubview(rootStackView)
         rootStackView.addArrangesSubviews([topStackView, bottomStackView])
-        topStackView.addArrangesSubviews([coinNameLabel, percentsLabel])
-        bottomStackView.addArrangesSubviews([dateLabel, currentPriceLabel])
+        topStackView.addArrangesSubviews([coinNameLabel, UIView(), percentsLabel])
+        bottomStackView.addArrangesSubviews([dateLabel, UIView(), currentPriceLabel])
 
         rootStackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(Constants.topBottomPadding)

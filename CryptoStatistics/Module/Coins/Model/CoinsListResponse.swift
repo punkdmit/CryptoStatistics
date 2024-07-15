@@ -8,7 +8,7 @@
 import Foundation
 
 struct CoinsListResponse: Codable {
-    let data: Data?
+    let data: Data
 
     enum CodingKeys: String, CodingKey {
         case data

@@ -6,7 +6,6 @@
 //
 
 // https://data.messari.io/api/v1/assets/«тутмонета»/metrics
-// btc, eth, tron, luna, polkadot, dogecoin, tether, stellar, cardano, xrp
 
 import Foundation
 
@@ -65,10 +64,10 @@ private extension NetworkService {
         let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             if let error = error {
                 completion(.failure(error as! NetworkError))
-            } else if let data = data {
-                completion(.success(data))
             } else if let responseErrorCode = self?.checkResponseCode(response) {
                 completion(.failure(responseErrorCode))
+            } else if let data = data {
+                completion(.success(data))
             }
         }
         

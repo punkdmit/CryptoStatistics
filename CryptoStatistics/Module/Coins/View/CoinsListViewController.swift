@@ -12,6 +12,20 @@ protocol CoinsListViewControllerDelegate: AnyObject {
     func goToAuth()
 }
 
+// MARK: - Screen States
+enum CurrentState {
+    case loading
+    case loaded
+    case updated
+    case failed
+}
+
+// MARK: - Request Reasons
+enum RequestReason {
+    case firstLoad
+    case update
+}
+
 // MARK: - CoinsListViewController
 final class CoinsListViewController: UIViewController {
 
@@ -19,24 +33,47 @@ final class CoinsListViewController: UIViewController {
 
     private enum Constants {
         static let rightBarButtonText = "Logout"
+        static let leftBarButtonText = "Sort"
+        static let alertControllerTitle = "Sort by"
+        static let sortByReducingTitle = "Reducing price changes"
+        static let sortByIncreasingTitle = "Increasing price changes"
+        static let cancelAction = "Отмена"
+
     }
 
     // MARK: Internal properties
 
     weak var delegate: CoinsListViewControllerDelegate?
+    var currentState: CurrentState
 
     // MARK: Private properties
 
     private let coinsListViewModel: CoinsListViewModel?
+    private let refreshControl = UIRefreshControl()
+    private let alertController = UIAlertController(
+        title: Constants.alertControllerTitle,
+        message: nil,
+        preferredStyle: .actionSheet
+    )
 
     //MARK: UI Elements
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = Assets.Colors.grayLight
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.backgroundColor = Assets.Colors.dark
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(CoinTableViewCell.self, forCellReuseIdentifier: CoinTableViewCell.identifier)
+        tableView.register(
+            CoinTableViewCell.self,
+            forCellReuseIdentifier: CoinTableViewCell.identifier
+        )
         return tableView
     }()
 
@@ -46,7 +83,7 @@ final class CoinsListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupViewModel()
-        coinsListViewModel?.fetchCoin(with: .coin(name: "btc"))
+        coinsListViewModel?.fetchCoins(.firstLoad)
     }
 
     func setupViewModel() {
@@ -56,12 +93,33 @@ final class CoinsListViewController: UIViewController {
                 self.tableView.reloadData()
             }
         }
+
+        coinsListViewModel?.switchViewState = { [weak self] state in
+            guard let self = self else { return }
+            currentState = state
+            switch currentState {
+            case .loading:
+                activityIndicator.startAnimating()
+            case .loaded:
+                activityIndicator.stopAnimating()
+                setupRefreshControl()
+            case .updated:
+                refreshControl.endRefreshing()
+            case .failed:
+                refreshControl.endRefreshing()
+                activityIndicator.stopAnimating()
+            }
+        }
     }
 
     // MARK: Initialization
 
-    init(coinsListViewModel: CoinsListViewModel) {
+    init(
+        coinsListViewModel: CoinsListViewModel,
+        currentState: CurrentState = .loading
+    ) {
         self.coinsListViewModel = coinsListViewModel
+        self.currentState = currentState
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -74,14 +132,14 @@ final class CoinsListViewController: UIViewController {
 extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coinsListViewModel?.convertedCoinsArray?.count ?? 0
+        return coinsListViewModel?.convertedCoinsArray.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinTableViewCell.identifier, for: indexPath) as? CoinTableViewCell else {
             return UITableViewCell()
         }
-        if let coin = coinsListViewModel?.convertedCoinsArray?[indexPath.row] {
+        if let coin = coinsListViewModel?.convertedCoinsArray[indexPath.row] {
             cell.configure(with: coin)
         }
         return cell
@@ -99,6 +157,14 @@ private extension CoinsListViewController {
     func logoutButtonTapped() {
         delegate?.goToAuth()
     }
+
+    func sortButtonTapped() {
+        self.present(alertController, animated: true)
+    }
+
+    func refreshControlPulled() {
+        coinsListViewModel?.fetchCoins(.update)
+    }
 }
 
 // MARK: - Private methods
@@ -106,18 +172,26 @@ private extension CoinsListViewController {
 
     func setupUI() {
         configureLayout()
-        addBarButtonItem()
+        addRightBarButtonItem()
+        addLeftBarButtonItem()
+        setupAlertController()
+//        setupRefreshControl()
     }
 
     func configureLayout() {
         view.addSubview(tableView)
+        view.addSubview(activityIndicator)
 
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+
+        activityIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
 
-    func addBarButtonItem() {
+    func addRightBarButtonItem() {
         let logoutButton = UIBarButtonItem(
             title: Constants.rightBarButtonText,
             style: .done,
@@ -125,5 +199,54 @@ private extension CoinsListViewController {
             action: #selector(logoutButtonTapped)
         )
         navigationItem.rightBarButtonItem = logoutButton
+    }
+
+    func addLeftBarButtonItem() {
+        let sortButton = UIBarButtonItem(
+            title: Constants.leftBarButtonText,
+            style: .plain,
+            target: self,
+            action: #selector(sortButtonTapped)
+        )
+        navigationItem.leftBarButtonItem = sortButton
+    }
+
+    func setupAlertController() {
+        ///убывание
+        let sortByReducingAction = UIAlertAction(
+            title: Constants.sortByReducingTitle,
+            style: .default
+        ) { _ in
+            self.coinsListViewModel?.sortCoins(by: .reduce)
+        }
+        ///возрастание
+        let sortByIncreasingAction = UIAlertAction(
+            title: Constants.sortByIncreasingTitle,
+            style: .default
+        ) { _ in
+            self.coinsListViewModel?.sortCoins(by: .increasing)
+        }
+        let cancelAction = UIAlertAction(
+            title: Constants.cancelAction,
+            style: .cancel
+        )
+        cancelAction.setValue(Assets.Colors.red, forKey: "titleTextColor")
+        alertController.addAction(sortByReducingAction)
+        alertController.addAction(sortByIncreasingAction)
+        alertController.addAction(cancelAction)
+    }
+
+    func setupRefreshControl() {
+        refreshControl.tintColor = Assets.Colors.grayLight
+        refreshControl.addTarget(
+            self,
+            action: #selector(refreshControlPulled),
+            for: .valueChanged
+        )
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        } else {
+            tableView.addSubview(refreshControl)
+        }
     }
 }
