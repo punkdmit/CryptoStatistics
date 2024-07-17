@@ -13,7 +13,7 @@ final class CoinsListCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     var navigationController: UINavigationController
 
-    private let transition = CATransition()
+//    private let transition = CATransition()
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -30,7 +30,6 @@ extension CoinsListCoordinator {
             networkService: NetworkService()
         )
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
-        coinsListViewController.delegate = coinsListViewModel
         navigationController.switchRootController(
             to: [coinsListViewController],
             animated: true,
@@ -46,7 +45,6 @@ extension CoinsListCoordinator {
             networkService: NetworkService()
         )
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
-        coinsListViewController.delegate = coinsListViewModel
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         navigationController.pushViewController(coinsListViewController, animated: true)
@@ -56,5 +54,11 @@ extension CoinsListCoordinator {
     func goToAuthViewController() {
         let authCoordinator = AuthCoordinator(navigationController: navigationController)
         authCoordinator.start()
+    }
+
+    func goToCoinViewController(with name: String) {
+        let coinCoordinator = CoinCoordinator(navigationController: navigationController)
+        childCoordinators.append(coinCoordinator)
+        coinCoordinator.start(with: name)
     }
 }

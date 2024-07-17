@@ -11,7 +11,13 @@ protocol AuthViewModelDelegate: AnyObject {
     func showError(with message: String?, _ key: TextFieldType)
 }
 
-final class AuthViewModel {
+protocol IAuthViewModel {
+    var userLogin: String? { get set }
+    var userPassword: String? { get set }
+    func didTapButton() throws
+}
+
+final class AuthViewModel: IAuthViewModel {
 
     private enum DefaultValues {
         static let email = "1234"
@@ -23,10 +29,10 @@ final class AuthViewModel {
 
     weak var delegate: AuthViewModelDelegate?
 
-    private let mainCoordinator: AuthCoordinator?
+    private let authCoordinator: AuthCoordinator?
 
     init(authCoordinator: AuthCoordinator) {
-        self.mainCoordinator = authCoordinator
+        self.authCoordinator = authCoordinator
     }
 
 }
@@ -49,6 +55,6 @@ extension AuthViewModel {
     }
 
     func moveToCoinsListViewController() {
-        mainCoordinator?.goToListViewController()
+        authCoordinator?.goToListViewController()
     }
 }

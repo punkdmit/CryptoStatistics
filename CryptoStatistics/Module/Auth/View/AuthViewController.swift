@@ -30,7 +30,7 @@ final class AuthViewController: UIViewController {
 
     // MARK: private properties
 
-    private let authViewModel: AuthViewModel?
+    private var authViewModel: IAuthViewModel?
 
     private lazy var textFieldsStackView: UIStackView = {
         let stack = UIStackView()
@@ -66,7 +66,7 @@ final class AuthViewController: UIViewController {
 
     // MARK: Initialization
 
-    init(authViewModel: AuthViewModel?) {
+    init(authViewModel: IAuthViewModel?) {
         self.authViewModel = authViewModel
         super.init(nibName: nil, bundle: nil)
     }

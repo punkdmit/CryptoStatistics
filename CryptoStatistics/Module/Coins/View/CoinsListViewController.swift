@@ -7,19 +7,6 @@
 
 import UIKit
 
-// MARK: - CoinsListViewControllerDelegate
-protocol CoinsListViewControllerDelegate: AnyObject {
-    func goToAuth()
-}
-
-// MARK: - Screen States
-enum CurrentState {
-    case loading
-    case loaded
-    case updated
-    case failed
-}
-
 // MARK: - Request Reasons
 enum RequestReason {
     case firstLoad
@@ -42,12 +29,11 @@ final class CoinsListViewController: UIViewController {
 
     // MARK: Internal properties
 
-    weak var delegate: CoinsListViewControllerDelegate?
     var currentState: CurrentState?
 
     // MARK: Private properties
 
-    private let coinsListViewModel: CoinsListViewModel?
+    private var coinsListViewModel: ICoinsListViewModel?
     private let refreshControl = UIRefreshControl()
     private let alertController = UIAlertController(
         title: Constants.alertControllerTitle,
@@ -87,7 +73,7 @@ final class CoinsListViewController: UIViewController {
 
     // MARK: Initialization
 
-    init(coinsListViewModel: CoinsListViewModel) {
+    init(coinsListViewModel: ICoinsListViewModel) {
         self.coinsListViewModel = coinsListViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -115,18 +101,21 @@ extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     ///чтобы при загрузке не было разделителей и пустых ячеек
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if coinsListViewModel?.convertedCoinsArray[indexPath.row] != nil {
-            tableView.separatorStyle = .singleLine
-            return UITableView.automaticDimension
-        } else {
-            tableView.separatorStyle = .none
-            return 0
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if coinsListViewModel?.convertedCoinsArray[indexPath.row] != nil {
+//            tableView.separatorStyle = .singleLine
+//            return UITableView.automaticDimension
+//        } else {
+//            tableView.separatorStyle = .none
+//            return 0
+//        }
+//    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if let coinName = coinsListViewModel?.convertedCoinsArray[indexPath.row].coinName {
+            coinsListViewModel?.goToCoinViewController(with: coinName)
+        }
     }
 }
 
@@ -135,7 +124,7 @@ extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 private extension CoinsListViewController {
 
     func logoutButtonTapped() {
-        delegate?.goToAuth()
+        coinsListViewModel?.goToAuth()
     }
 
     func sortButtonTapped() {
@@ -151,6 +140,7 @@ private extension CoinsListViewController {
 private extension CoinsListViewController {
 
     func setupUI() {
+        navigationController?.navigationBar.prefersLargeTitles = false
         configureLayout()
         addRightBarButtonItem()
         addLeftBarButtonItem()
