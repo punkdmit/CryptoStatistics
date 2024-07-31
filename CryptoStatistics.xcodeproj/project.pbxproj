@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3F1EC423ABB92B49DD5C8CC5 /* Pods_CryptoStatistics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 713C0C88A26D77B047C7B505 /* Pods_CryptoStatistics.framework */; };
+		AEA9169E2C5AA84300492FA1 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA9169D2C5AA84300492FA1 /* DIContainer.swift */; };
+		AEA916A02C5AB34800492FA1 /* CoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA9169F2C5AB34800492FA1 /* CoinService.swift */; };
 		F82410D72C2C30B60056F332 /* UIStackView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82410D62C2C30B60056F332 /* UIStackView+extension.swift */; };
 		F82410D92C2C331B0056F332 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82410D82C2C331B0056F332 /* UIView+extension.swift */; };
 		F82725472C31773F006AAE30 /* TextFieldError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82725462C31773F006AAE30 /* TextFieldError.swift */; };
@@ -59,6 +61,8 @@
 		25B05515B5622CD2BC4E298E /* Pods-CryptoStatistics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoStatistics.release.xcconfig"; path = "Target Support Files/Pods-CryptoStatistics/Pods-CryptoStatistics.release.xcconfig"; sourceTree = "<group>"; };
 		2BE5E28244C33BC0FC2C5F81 /* Pods-CryptoStatistics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CryptoStatistics.debug.xcconfig"; path = "Target Support Files/Pods-CryptoStatistics/Pods-CryptoStatistics.debug.xcconfig"; sourceTree = "<group>"; };
 		713C0C88A26D77B047C7B505 /* Pods_CryptoStatistics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CryptoStatistics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEA9169D2C5AA84300492FA1 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		AEA9169F2C5AB34800492FA1 /* CoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinService.swift; sourceTree = "<group>"; };
 		F82410D62C2C30B60056F332 /* UIStackView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+extension.swift"; sourceTree = "<group>"; };
 		F82410D82C2C331B0056F332 /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extension.swift"; sourceTree = "<group>"; };
 		F82725462C31773F006AAE30 /* TextFieldError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldError.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				F827254B2C31A72C006AAE30 /* CoinsListViewModel.swift */,
+				AEA9169F2C5AB34800492FA1 /* CoinService.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -303,6 +308,7 @@
 				F86C0DCA2C52BB6D006D3DCE /* AuthContainer.swift */,
 				F884571B2C555752001606E2 /* CoinsListContainer.swift */,
 				F863C8362C57965100DA7780 /* CoinContainer.swift */,
+				AEA9169D2C5AA84300492FA1 /* DIContainer.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -600,6 +606,7 @@
 				F82410D72C2C30B60056F332 /* UIStackView+extension.swift in Sources */,
 				F8F234B02C284F5800831D30 /* Coordinator.swift in Sources */,
 				F8F234BC2C285C0300831D30 /* Assets.swift in Sources */,
+				AEA9169E2C5AA84300492FA1 /* DIContainer.swift in Sources */,
 				F84C81CD2C481D4C0072623D /* ScreenState.swift in Sources */,
 				F8F234B82C28593A00831D30 /* AppConstants.swift in Sources */,
 				F8E4125E2C35E55B005CD0BD /* CoinsListTableViewCellModel.swift in Sources */,
@@ -624,6 +631,7 @@
 				F87378F22C383E57004BC6A4 /* ModelConversionService.swift in Sources */,
 				F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */,
 				F884571C2C555752001606E2 /* CoinsListContainer.swift in Sources */,
+				AEA916A02C5AB34800492FA1 /* CoinService.swift in Sources */,
 				F8F234BF2C28615200831D30 /* CustomTextField.swift in Sources */,
 				F8E4125B2C35C444005CD0BD /* CoinTableViewCell.swift in Sources */,
 				F88457162C53EC9E001606E2 /* Assembly.swift in Sources */,
