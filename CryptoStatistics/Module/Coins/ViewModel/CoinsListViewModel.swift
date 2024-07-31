@@ -41,7 +41,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
 
     //MARK: Private properties
 
-    private let coinsListCoordinator: CoinsListCoordinator?
+    private let coinsListCoordinator: ICoinsListCoordinator?
     private let modelConversationService: IModelConversionService?
     private let networkService: INetworkService?
     private let delayManager = DelayManager()
@@ -51,7 +51,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
     //MARK: Initialization
 
     init(
-        coinsListCoordinator: CoinsListCoordinator,
+        coinsListCoordinator: ICoinsListCoordinator,
         modelConversationService: IModelConversionService,
         networkService: INetworkService
     ) {
@@ -87,8 +87,18 @@ extension CoinsListViewModel {
                                 temporaryCoinsArray[index] = coinsListTableViewCellModel
                             }
                         }
-                    case .failure(let error): /// проставить case для каждого типа ошибки !!!
-                        print(error)
+                    case .failure(let error):
+                        switch error {
+                        case .clientError(let value):
+                            guard value != 404 else { break } // 404 появляется из за бека
+                            switchViewState?(.failed(errorMessage: "Проверьте подключение"))
+                        case .decodingError, .noData, .responseError, .urlError, .requestError:
+                            switchViewState?(.failed(errorMessage: "Проблема. Уже исправляем"))
+                        case .serverError(_):
+                            switchViewState?(.failed(errorMessage: "Ошибка на сервере"))
+                        case .invalidResponseCode(_):
+                            switchViewState?(.failed(errorMessage: "Ошибка на сервере"))
+                        }
                     }
                     group.leave()
                 }

@@ -25,6 +25,7 @@ final class CoinsListViewController: UIViewController {
         static let sortByReducingTitle = "Reducing price changes"
         static let sortByIncreasingTitle = "Increasing price changes"
         static let cancelAction = "Отмена"
+        static let okAction = "Ok"
     }
 
     // MARK: Internal properties
@@ -33,12 +34,19 @@ final class CoinsListViewController: UIViewController {
 
     // MARK: Private properties
 
-    private var coinsListViewModel: ICoinsListViewModel?
+    private var coinsListViewModel: ICoinsListViewModel
     private let refreshControl = UIRefreshControl()
-    private let alertController = UIAlertController(
+
+    private let sortAlertController = UIAlertController(
         title: Constants.alertControllerTitle,
         message: nil,
         preferredStyle: .actionSheet
+    )
+
+    private let errorAlertController = UIAlertController(
+        title: nil,
+        message: nil,
+        preferredStyle: .alert
     )
 
     //MARK: UI Elements
@@ -68,7 +76,7 @@ final class CoinsListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupViewModel()
-        coinsListViewModel?.fetchCoins(.firstLoad)
+        coinsListViewModel.fetchCoins(.firstLoad)
     }
 
     // MARK: Initialization
@@ -87,35 +95,23 @@ final class CoinsListViewController: UIViewController {
 extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coinsListViewModel?.convertedCoinsArray.count ?? 0
+        return coinsListViewModel.convertedCoinsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinTableViewCell.identifier, for: indexPath) as? CoinTableViewCell else {
             return UITableViewCell()
         }
-        if let coin = coinsListViewModel?.convertedCoinsArray[indexPath.row] {
-            cell.configure(with: coin)
-        }
+        let coin = coinsListViewModel.convertedCoinsArray[indexPath.row]
+        cell.configure(with: coin)
         return cell
     }
 
-    ///чтобы при загрузке не было разделителей и пустых ячеек
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if coinsListViewModel?.convertedCoinsArray[indexPath.row] != nil {
-//            tableView.separatorStyle = .singleLine
-//            return UITableView.automaticDimension
-//        } else {
-//            tableView.separatorStyle = .none
-//            return 0
-//        }
-//    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let coinName = coinsListViewModel?.convertedCoinsArray[indexPath.row].coinName {
-            coinsListViewModel?.goToCoinViewController(with: coinName)
-        }
+        let coinName = coinsListViewModel.convertedCoinsArray[indexPath.row].coinName
+        coinsListViewModel.goToCoinViewController(with: coinName)
+
     }
 }
 
@@ -124,15 +120,15 @@ extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 private extension CoinsListViewController {
 
     func logoutButtonTapped() {
-        coinsListViewModel?.goToAuth()
+        coinsListViewModel.goToAuth()
     }
 
     func sortButtonTapped() {
-        self.present(alertController, animated: true)
+        self.present(sortAlertController, animated: true)
     }
 
     func refreshControlPulled() {
-        coinsListViewModel?.fetchCoins(.update)
+        coinsListViewModel.fetchCoins(.update)
     }
 }
 
@@ -145,6 +141,7 @@ private extension CoinsListViewController {
         addRightBarButtonItem()
         addLeftBarButtonItem()
         setupAlertController()
+        setupErrorAlertController()
     }
 
     func configureLayout() {
@@ -161,14 +158,14 @@ private extension CoinsListViewController {
     }
 
     func setupViewModel() {
-        coinsListViewModel?.didUpdateCoinsList = { [weak self] in
+        coinsListViewModel.didUpdateCoinsList = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
 
-        coinsListViewModel?.switchViewState = { [weak self] state in
+        coinsListViewModel.switchViewState = { [weak self] state in
             guard let self = self else { return }
             currentState = state
             switch currentState {
@@ -179,8 +176,8 @@ private extension CoinsListViewController {
                 setupRefreshControl()
             case .updated:
                 refreshControl.endRefreshing()
-            case .failed:
-                break
+            case .failed(let errorMessage):
+                showErrorAlert(with: errorMessage)
             case .none:
                 break
             }
@@ -213,23 +210,23 @@ private extension CoinsListViewController {
             title: Constants.sortByReducingTitle,
             style: .default
         ) { _ in
-            self.coinsListViewModel?.sortCoins(by: .reduce)
+            self.coinsListViewModel.sortCoins(by: .reduce)
         }
         ///возрастание
         let sortByIncreasingAction = UIAlertAction(
             title: Constants.sortByIncreasingTitle,
             style: .default
         ) { _ in
-            self.coinsListViewModel?.sortCoins(by: .increasing)
+            self.coinsListViewModel.sortCoins(by: .increasing)
         }
         let cancelAction = UIAlertAction(
             title: Constants.cancelAction,
             style: .cancel
         )
         cancelAction.setValue(Assets.Colors.red, forKey: "titleTextColor")
-        alertController.addAction(sortByReducingAction)
-        alertController.addAction(sortByIncreasingAction)
-        alertController.addAction(cancelAction)
+        sortAlertController.addAction(sortByReducingAction)
+        sortAlertController.addAction(sortByIncreasingAction)
+        sortAlertController.addAction(cancelAction)
     }
 
     func setupRefreshControl() {
@@ -244,5 +241,22 @@ private extension CoinsListViewController {
         } else {
             tableView.addSubview(refreshControl)
         }
+    }
+
+
+    func showErrorAlert(with title: String) {
+        DispatchQueue.main.async {
+            self.errorAlertController.title = title
+            self.present(self.errorAlertController, animated: true)
+        }
+    }
+
+    func setupErrorAlertController() {
+        let okAction = UIAlertAction(
+            title: Constants.okAction,
+            style: .default
+        )
+        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        errorAlertController.addAction(okAction)
     }
 }

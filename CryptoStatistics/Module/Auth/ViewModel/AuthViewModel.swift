@@ -29,9 +29,9 @@ final class AuthViewModel: IAuthViewModel {
 
     weak var delegate: AuthViewModelDelegate?
 
-    private let authCoordinator: AuthCoordinator?
+    private let authCoordinator: IAuthCoordinator
 
-    init(authCoordinator: AuthCoordinator) {
+    init(authCoordinator: IAuthCoordinator) {
         self.authCoordinator = authCoordinator
     }
 
@@ -55,6 +55,6 @@ extension AuthViewModel {
     }
 
     func moveToCoinsListViewController() {
-        authCoordinator?.goToListViewController()
+        authCoordinator.goToListViewController()
     }
 }

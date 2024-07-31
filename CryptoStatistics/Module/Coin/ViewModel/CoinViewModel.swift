@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 //MARK: - ICoinViewModel
 
 protocol ICoinViewModel {
     var coin: CoinConvertedModel? { get }
-    var didUpdateCoin: ((CoinConvertedModel?) -> Void)? { get set }
+    var didUpdateCoin: AnyPublisher<CoinConvertedModel?, Never> { get set }
     var switchViewState: ((_ state: CurrentState) -> Void)? { get set }
     func fetchCoin()
 }
@@ -29,15 +30,13 @@ final class CoinViewModel: ICoinViewModel {
     // MARK: Internal properties
 
     var coin: CoinConvertedModel?
-    var didUpdateCoin: ((CoinConvertedModel?) -> Void)?
+    var didUpdateCoin: AnyPublisher<CoinConvertedModel?, Never>
     var switchViewState: ((_ state: CurrentState) -> Void)?
 
     // MARK: Private properties
 
     private let networkService: INetworkService?
     private let modelConversationService: IModelConversionService?
-
-    private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
 
     // MARK: Initialization
 
@@ -64,13 +63,21 @@ extension CoinViewModel {
             case .success(let result):
                 let convertedModel = convertToLocaleModel(result)
                 if let convertedModel = convertedModel {
-                    concurrentQueue.async(flags: .barrier) {
-                        self.coin = convertedModel
-                        self.didUpdateCoin?(self.coin)
-                    }
+                    self.coin = convertedModel
+                    self.didUpdateCoin(self.coin)
+
                 }
             case .failure(let error):
-                print(error)
+                switch error {
+                case .clientError(_):
+                    switchViewState?(.failed(errorMessage: "Проверьте подключение"))
+                case .decodingError, .noData, .responseError, .urlError, .requestError:
+                    switchViewState?(.failed(errorMessage: "Проблема. Уже исправляем"))
+                case .serverError(_):
+                    switchViewState?(.failed(errorMessage: "Ошибка на сервере"))
+                case .invalidResponseCode(_):
+                    switchViewState?(.failed(errorMessage: "Ошибка на сервере"))
+                }
             }
             switchViewState?(.loaded)
         }

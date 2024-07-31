@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 //MARK: - CoinViewController
 final class CoinViewController: UIViewController {
@@ -17,6 +18,7 @@ final class CoinViewController: UIViewController {
         static let сlosePriceLabelText = "Final price today: "
         static let percentsLabelText = "Price changed: "
         static let currentPriceLabelText = "Price: "
+        static let okAction = "Ok"
     }
 
     //MARK: Internal properties
@@ -25,7 +27,9 @@ final class CoinViewController: UIViewController {
 
     //MARK: Private properties
 
-    private var coinViewModel: ICoinViewModel?
+    private var coinViewModel: ICoinViewModel
+
+    private var cancellable = Set<AnyCancellable>()
 
     private var percentsLabelColor: UIColor? {
         didSet {
@@ -33,13 +37,19 @@ final class CoinViewController: UIViewController {
         }
     }
 
+    private let alertController = UIAlertController(
+        title: nil,
+        message: nil,
+        preferredStyle: .alert
+    )
+
     //MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupViewModel()
-        coinViewModel?.fetchCoin()
+        coinViewModel.fetchCoin()
     }
 
     //MARK: UI Elements
@@ -95,7 +105,7 @@ final class CoinViewController: UIViewController {
 
     //MARK: Initialization
 
-    init(coinViewModel: ICoinViewModel?) {
+    init(coinViewModel: ICoinViewModel) {
         self.coinViewModel = coinViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -114,6 +124,7 @@ private extension CoinViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: Assets.Colors.white]
         configureLayout()
+        setupAlertController()
     }
 
     func configureLayout() {
@@ -133,9 +144,10 @@ private extension CoinViewController {
     }
 
     func setupViewModel() {
-        coinViewModel?.didUpdateCoin = { [weak self] coin in
-            guard let coin = coin, let self = self else { return }
-            DispatchQueue.main.async {
+        coinViewModel.didUpdateCoin
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] coin in
+                guard let coin = coin, let self = self else { return }
                 self.navigationItem.title = coin.coinName
                 self.openPriceLabel.text = Constants.openPriceLabelText + "\(coin.openDayPrice)$"
                 self.closePriceLabel.text = Constants.сlosePriceLabelText + "\(coin.closeDayPrice)$"
@@ -143,10 +155,9 @@ private extension CoinViewController {
                 self.currentPriceLabel.text = Constants.currentPriceLabelText + "\(coin.currentPrice)$"
                 self.dateLabel.text = "\(coin.date)"
                 self.percentsLabelColor = (coin.dayDynamicPercents > 0) ? Assets.Colors.lime : Assets.Colors.red
-            }
-        }
+            }.store(in: &cancellable)
 
-        coinViewModel?.switchViewState = { [weak self] state in
+        coinViewModel.switchViewState = { [weak self] state in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.currentState = state
@@ -157,13 +168,29 @@ private extension CoinViewController {
                     self.activityIndicator.stopAnimating()
                 case .updated:
                     break
-                case .failed:
-                    break
+                case .failed(let errorMessage):
+                    self.showAlert(with: errorMessage)
                 case .none:
                     break
                 }
             }
         }
+    }
+
+    func showAlert(with title: String) {
+        DispatchQueue.main.async {
+            self.alertController.title = title
+            self.present(self.alertController, animated: true)
+        }
+    }
+
+    func setupAlertController() {
+        let okAction = UIAlertAction(
+            title: Constants.okAction,
+            style: .default
+        )
+        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        alertController.addAction(okAction)
     }
 
 }

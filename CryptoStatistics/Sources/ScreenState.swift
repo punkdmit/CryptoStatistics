@@ -12,5 +12,5 @@ enum CurrentState {
     case loading
     case loaded
     case updated
-    case failed
+    case failed(errorMessage: String)
 }
