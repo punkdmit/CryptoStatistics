@@ -19,7 +19,7 @@ final class CoinsListAssembly: Assembly {
         let coinsListViewModel = CoinsListViewModel(
             coinsListCoordinator: coinsListCoordinator,
             modelConversationService: ModelConversionService(),
-            networkService: NetworkService()
+            networkService: DIContainer.shared.resovle(INetworkService.self)!
         )
         let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
         return coinsListViewController

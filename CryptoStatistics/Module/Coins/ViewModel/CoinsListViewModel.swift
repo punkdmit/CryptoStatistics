@@ -45,7 +45,8 @@ final class CoinsListViewModel: ICoinsListViewModel {
     private let modelConversationService: IModelConversionService?
     private let networkService: INetworkService?
     private let delayManager = DelayManager()
-
+    private let coinService = CoinService(networkService: NetworkService())
+    
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
 
     //MARK: Initialization
@@ -74,9 +75,26 @@ extension CoinsListViewModel {
                 repeating: nil,
                 count: Constants.coins.count
             )
+            // Combine - collect
+            // Structured Concurrency - TaskGroup
+            
             let group = DispatchGroup()
             for (index, coinName) in Constants.coins.enumerated() {
                 group.enter()
+                // Combine
+//                self.coinService.getCoin(.coin(coinName))
+//                    .receive(on: DispatchQueue.main)
+//                    .sink(receiveCompletion: { completion in
+//                        switch completion {
+//                        case .finished:
+//                            break
+//                        case .failure(let failure): 
+//                            break
+//                        }
+//                    }, receiveValue: { value in
+//                        value // CoinResponse
+//                    }).store(in: &cancellabels)
+                
                 self.networkService?.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
                     guard let self = self else { return }
                     switch result {
