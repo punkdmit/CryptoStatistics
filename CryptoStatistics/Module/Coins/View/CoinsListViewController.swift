@@ -7,19 +7,6 @@
 
 import UIKit
 
-// MARK: - CoinsListViewControllerDelegate
-protocol CoinsListViewControllerDelegate: AnyObject {
-    func goToAuth()
-}
-
-// MARK: - Screen States
-enum CurrentState {
-    case loading
-    case loaded
-    case updated
-    case failed
-}
-
 // MARK: - Request Reasons
 enum RequestReason {
     case firstLoad
@@ -38,22 +25,28 @@ final class CoinsListViewController: UIViewController {
         static let sortByReducingTitle = "Reducing price changes"
         static let sortByIncreasingTitle = "Increasing price changes"
         static let cancelAction = "Отмена"
-
+        static let okAction = "Ok"
     }
 
     // MARK: Internal properties
 
-    weak var delegate: CoinsListViewControllerDelegate?
-    var currentState: CurrentState
+    var currentState: CurrentState?
 
     // MARK: Private properties
 
-    private let coinsListViewModel: CoinsListViewModel?
+    private var coinsListViewModel: ICoinsListViewModel
     private let refreshControl = UIRefreshControl()
-    private let alertController = UIAlertController(
+
+    private let sortAlertController = UIAlertController(
         title: Constants.alertControllerTitle,
         message: nil,
         preferredStyle: .actionSheet
+    )
+
+    private let errorAlertController = UIAlertController(
+        title: nil,
+        message: nil,
+        preferredStyle: .alert
     )
 
     //MARK: UI Elements
@@ -83,43 +76,13 @@ final class CoinsListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupViewModel()
-        coinsListViewModel?.fetchCoins(.firstLoad)
-    }
-
-    func setupViewModel() {
-        coinsListViewModel?.didUpdateCoinsList = { [weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-
-        coinsListViewModel?.switchViewState = { [weak self] state in
-            guard let self = self else { return }
-            currentState = state
-            switch currentState {
-            case .loading:
-                activityIndicator.startAnimating()
-            case .loaded:
-                activityIndicator.stopAnimating()
-                setupRefreshControl()
-            case .updated:
-                refreshControl.endRefreshing()
-            case .failed:
-                refreshControl.endRefreshing()
-                activityIndicator.stopAnimating()
-            }
-        }
+        coinsListViewModel.fetchCoins(.firstLoad)
     }
 
     // MARK: Initialization
 
-    init(
-        coinsListViewModel: CoinsListViewModel,
-        currentState: CurrentState = .loading
-    ) {
+    init(coinsListViewModel: ICoinsListViewModel) {
         self.coinsListViewModel = coinsListViewModel
-        self.currentState = currentState
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -132,21 +95,23 @@ final class CoinsListViewController: UIViewController {
 extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coinsListViewModel?.convertedCoinsArray.count ?? 0
+        return coinsListViewModel.convertedCoinsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinTableViewCell.identifier, for: indexPath) as? CoinTableViewCell else {
             return UITableViewCell()
         }
-        if let coin = coinsListViewModel?.convertedCoinsArray[indexPath.row] {
-            cell.configure(with: coin)
-        }
+        let coin = coinsListViewModel.convertedCoinsArray[indexPath.row]
+        cell.configure(with: coin)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let coinName = coinsListViewModel.convertedCoinsArray[indexPath.row].coinName
+        coinsListViewModel.goToCoinViewController(with: coinName)
+
     }
 }
 
@@ -155,15 +120,15 @@ extension CoinsListViewController: UITableViewDataSource, UITableViewDelegate {
 private extension CoinsListViewController {
 
     func logoutButtonTapped() {
-        delegate?.goToAuth()
+        coinsListViewModel.goToAuth()
     }
 
     func sortButtonTapped() {
-        self.present(alertController, animated: true)
+        self.present(sortAlertController, animated: true)
     }
 
     func refreshControlPulled() {
-        coinsListViewModel?.fetchCoins(.update)
+        coinsListViewModel.fetchCoins(.update)
     }
 }
 
@@ -171,11 +136,12 @@ private extension CoinsListViewController {
 private extension CoinsListViewController {
 
     func setupUI() {
+        navigationController?.navigationBar.prefersLargeTitles = false
         configureLayout()
         addRightBarButtonItem()
         addLeftBarButtonItem()
         setupAlertController()
-//        setupRefreshControl()
+        setupErrorAlertController()
     }
 
     func configureLayout() {
@@ -188,6 +154,33 @@ private extension CoinsListViewController {
 
         activityIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
+        }
+    }
+
+    func setupViewModel() {
+        coinsListViewModel.didUpdateCoinsList = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+
+        coinsListViewModel.switchViewState = { [weak self] state in
+            guard let self = self else { return }
+            currentState = state
+            switch currentState {
+            case .loading:
+                activityIndicator.startAnimating()
+            case .loaded:
+                activityIndicator.stopAnimating()
+                setupRefreshControl()
+            case .updated:
+                refreshControl.endRefreshing()
+            case .failed(let errorMessage):
+                showErrorAlert(with: errorMessage)
+            case .none:
+                break
+            }
         }
     }
 
@@ -217,23 +210,23 @@ private extension CoinsListViewController {
             title: Constants.sortByReducingTitle,
             style: .default
         ) { _ in
-            self.coinsListViewModel?.sortCoins(by: .reduce)
+            self.coinsListViewModel.sortCoins(by: .reduce)
         }
         ///возрастание
         let sortByIncreasingAction = UIAlertAction(
             title: Constants.sortByIncreasingTitle,
             style: .default
         ) { _ in
-            self.coinsListViewModel?.sortCoins(by: .increasing)
+            self.coinsListViewModel.sortCoins(by: .increasing)
         }
         let cancelAction = UIAlertAction(
             title: Constants.cancelAction,
             style: .cancel
         )
         cancelAction.setValue(Assets.Colors.red, forKey: "titleTextColor")
-        alertController.addAction(sortByReducingAction)
-        alertController.addAction(sortByIncreasingAction)
-        alertController.addAction(cancelAction)
+        sortAlertController.addAction(sortByReducingAction)
+        sortAlertController.addAction(sortByIncreasingAction)
+        sortAlertController.addAction(cancelAction)
     }
 
     func setupRefreshControl() {
@@ -248,5 +241,22 @@ private extension CoinsListViewController {
         } else {
             tableView.addSubview(refreshControl)
         }
+    }
+
+
+    func showErrorAlert(with title: String) {
+        DispatchQueue.main.async {
+            self.errorAlertController.title = title
+            self.present(self.errorAlertController, animated: true)
+        }
+    }
+
+    func setupErrorAlertController() {
+        let okAction = UIAlertAction(
+            title: Constants.okAction,
+            style: .default
+        )
+        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        errorAlertController.addAction(okAction)
     }
 }

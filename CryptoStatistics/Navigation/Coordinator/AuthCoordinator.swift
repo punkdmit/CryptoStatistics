@@ -7,13 +7,23 @@
 
 import UIKit
 
+protocol IAuthCoordinator: Coordinator {
+    func goToListViewController()
+    func goToListViewController(in window: UIWindow)
+}
+
 // MARK: - AuthCoordinator
-final class AuthCoordinator: Coordinator {
+final class AuthCoordinator: IAuthCoordinator {
 
     var childCoordinators: [any Coordinator] = []
     var navigationController: UINavigationController
+    private let authContainer: AuthContainer
 
-    init(navigationController: UINavigationController) {
+    init(      
+        authContainer: AuthContainer,
+        navigationController: UINavigationController
+    ) {
+        self.authContainer = authContainer
         self.navigationController = navigationController
     }
 }
@@ -22,34 +32,35 @@ final class AuthCoordinator: Coordinator {
 extension AuthCoordinator {
     
     func start(in window: UIWindow) {
-        let authViewModel = AuthViewModel(authCoordinator: self)
-        let authViewController = AuthViewController(authViewModel: authViewModel)
-        authViewModel.delegate = authViewController
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
+        let authViewController = authContainer.makeAssembly(coordinator: self).view()
         navigationController.pushViewController(authViewController, animated: true)
     }
 
     func start() {
-        let authViewModel = AuthViewModel(authCoordinator: self)
-        let authViewController = AuthViewController(authViewModel: authViewModel)
-        authViewModel.delegate = authViewController
         navigationController.switchRootController(
-            to: [authViewController],
+            to: [authContainer.makeAssembly(coordinator: self).view()],
             animated: true,
             options: .transitionFlipFromLeft
         )
     }
 
     func goToListViewController() {
-        let coinsListCoordinator = CoinsListCoordinator(navigationController: navigationController)
+        let coinsListCoordinator = CoinsListCoordinator(
+            navigationController: navigationController,
+            coinsListContainer: CoinsListContainer()
+        )
         childCoordinators.append(coinsListCoordinator)
         coinsListCoordinator.start()
     }
 
     /// вызывает метод start(in: window) если пользователь авторизован
     func goToListViewController(in window: UIWindow) {
-        let coinsListCoordinator = CoinsListCoordinator(navigationController: navigationController)
+        let coinsListCoordinator = CoinsListCoordinator(
+            navigationController: navigationController,
+            coinsListContainer: CoinsListContainer()
+        )
         childCoordinators.append(coinsListCoordinator)
         coinsListCoordinator.start(in: window)
     }

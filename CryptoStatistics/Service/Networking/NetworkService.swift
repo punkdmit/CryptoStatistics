@@ -60,6 +60,7 @@ private extension NetworkService {
         return request
     }
 
+
     func createDataTask(with request: URLRequest, completion: @escaping (Result<Foundation.Data, NetworkError>) -> Void) -> URLSessionDataTask {
         let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             if let error = error {
@@ -90,3 +91,4 @@ private extension NetworkService {
         }
     }
 }
+

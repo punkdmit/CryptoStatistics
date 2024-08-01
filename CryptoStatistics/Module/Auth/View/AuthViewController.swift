@@ -30,7 +30,7 @@ final class AuthViewController: UIViewController {
 
     // MARK: private properties
 
-    private let authViewModel: AuthViewModel?
+    private var authViewModel: IAuthViewModel
 
     private lazy var textFieldsStackView: UIStackView = {
         let stack = UIStackView()
@@ -66,7 +66,7 @@ final class AuthViewController: UIViewController {
 
     // MARK: Initialization
 
-    init(authViewModel: AuthViewModel?) {
+    init(authViewModel: IAuthViewModel) {
         self.authViewModel = authViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -93,9 +93,9 @@ extension AuthViewController: TextFieldViewDelegate {
         if let customTextField = textField as? CustomTextField {
             switch customTextField.key {
             case .login:
-                authViewModel?.userLogin = customTextField.text
+                authViewModel.userLogin = customTextField.text
             case .password:
-                authViewModel?.userPassword = customTextField.text
+                authViewModel.userPassword = customTextField.text
             default:
                 break
             }
@@ -122,7 +122,7 @@ extension AuthViewController {
 
     func didTapButton() {
         do {
-            try authViewModel?.didTapButton()
+            try authViewModel.didTapButton()
         } catch {
             print(error)
         }
