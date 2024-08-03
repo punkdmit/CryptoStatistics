@@ -44,7 +44,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
     private let coinsListCoordinator: ICoinsListCoordinator?
     private let modelConversationService: IModelConversionService?
     private let networkService: INetworkService?
-    private let delayManager = DelayManager()
+    private let delayManager: IDelayManager?
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
 
@@ -53,11 +53,13 @@ final class CoinsListViewModel: ICoinsListViewModel {
     init(
         coinsListCoordinator: ICoinsListCoordinator,
         modelConversationService: IModelConversionService,
-        networkService: INetworkService
+        networkService: INetworkService,
+        delayManager: IDelayManager
     ) {
         self.coinsListCoordinator = coinsListCoordinator
         self.modelConversationService = modelConversationService
         self.networkService = networkService
+        self.delayManager = delayManager
     }
 }
 
@@ -65,7 +67,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
 extension CoinsListViewModel {
 
     func fetchCoins(_ reason: RequestReason) {
-        let isRequestEnabled = delayManager.performRequestIfNeeded { [weak self] in
+        let isRequestEnabled = delayManager?.performRequestIfNeeded { [weak self] in
             guard let self = self else { return }
             if reason == .firstLoad {
                 switchViewState?(.loading)
@@ -90,7 +92,7 @@ extension CoinsListViewModel {
                     case .failure(let error):
                         switch error {
                         case .clientError(let value):
-                            guard value != 404 else { break } // 404 появляется из за бека
+                            guard value != 404, value != 429 else { break } // появляются из за бека
                             switchViewState?(.failed(errorMessage: "Проверьте подключение"))
                         case .decodingError, .noData, .responseError, .urlError, .requestError:
                             switchViewState?(.failed(errorMessage: "Проблема. Уже исправляем"))
@@ -115,7 +117,7 @@ extension CoinsListViewModel {
                     self.switchViewState?(.updated)
                 }
             }
-        }
+        } ?? false
         if !isRequestEnabled {
             self.switchViewState?(.updated)
         }
@@ -145,12 +147,26 @@ extension CoinsListViewModel {
 extension CoinsListViewModel {
 
     func goToAuth() {
-        coinsListCoordinator?.goToAuthViewController()
-        StorageService.shared.save(isAuth: false)
+        do {
+            try coinsListCoordinator?.goToAuthViewController()
+        } catch {
+            print(error)
+        }
+
+        do {
+            let storage = try DIContainer.shared.resolve(IStorageService.self)
+            storage.save(isAuth: true)
+        } catch {
+            print(error)
+        }
     }
 
     func goToCoinViewController(with name: String) {
-        coinsListCoordinator?.goToCoinViewController(with: name)
+        do {
+            try coinsListCoordinator?.goToCoinViewController(with: name)
+        } catch {
+            print(error)
+        }
     }
 }
 

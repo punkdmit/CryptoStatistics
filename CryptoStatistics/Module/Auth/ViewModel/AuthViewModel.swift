@@ -49,12 +49,29 @@ extension AuthViewModel {
             delegate?.showError(with: TextFieldError.passwordError.rawValue, .password)
             hasError = true
         }
+
         guard !hasError else { return }
-        moveToCoinsListViewController()
-        StorageService.shared.save(isAuth: true)
+
+        do {
+            try moveToCoinsListViewController()
+        } catch {
+            print(error)
+        }
+
+        do {
+            let storage = try DIContainer.shared.resolve(IStorageService.self)
+            storage.save(isAuth: true)
+        } catch {
+            print(error)
+        }
+
     }
 
-    func moveToCoinsListViewController() {
-        authCoordinator.goToListViewController()
+    func moveToCoinsListViewController() throws {
+        do {
+            try authCoordinator.goToListViewController()
+        } catch {
+            print(error)
+        }
     }
 }

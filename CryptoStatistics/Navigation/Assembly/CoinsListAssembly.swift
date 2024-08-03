@@ -9,19 +9,28 @@ import Foundation
 
 final class CoinsListAssembly: Assembly {
 
-    private let coinsListCoordinator: ICoinsListCoordinator
+    private var coinsListCoordinator: ICoinsListCoordinator?
+    private let container = DIContainer.shared
 
-    init(coinsListCoordinator: ICoinsListCoordinator) {
-        self.coinsListCoordinator = coinsListCoordinator
+    func view(with name: String? = nil) throws -> CoinsListViewController {
+        guard let coinsListCoordinator = coinsListCoordinator else {
+            throw AssemblyError.coordinatorNotSet("Coordinator Error")
+        }
+        do {
+            let coinsListViewModel = CoinsListViewModel(
+                coinsListCoordinator: coinsListCoordinator,
+                modelConversationService: try container.resolve(IModelConversionService.self),
+                networkService: try container.resolve(INetworkService.self), 
+                delayManager: try container.resolve(IDelayManager.self)
+            )
+            let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
+            return coinsListViewController
+        } catch let error {
+            throw error
+        }
     }
 
-    func view(with name: String? = nil) -> CoinsListViewController {
-        let coinsListViewModel = CoinsListViewModel(
-            coinsListCoordinator: coinsListCoordinator,
-            modelConversationService: ModelConversionService(),
-            networkService: NetworkService()
-        )
-        let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
-        return coinsListViewController
+    func setCoordinator(_ coordinator: CoinsListCoordinator?) {
+        self.coinsListCoordinator = coordinator
     }
 }

@@ -9,16 +9,21 @@ import UIKit
 
 final class AuthAssembly: Assembly {
 
-    private let authCoordinator: IAuthCoordinator
+    private var authCoordinator: IAuthCoordinator?
+    private let container = DIContainer.shared
 
-    init(authCoordinator: IAuthCoordinator) {
-        self.authCoordinator = authCoordinator
-    }
-
-    func view(with name: String? = nil) -> AuthViewController {
+    func view(with name: String? = nil) throws -> AuthViewController {
+        guard let authCoordinator else {
+            throw AssemblyError.coordinatorNotSet("Coordinator Error")
+        }
         let authViewModel = AuthViewModel(authCoordinator: authCoordinator)
         let authViewController = AuthViewController(authViewModel: authViewModel)
         authViewModel.delegate = authViewController
         return authViewController
+
+    }
+
+    func setCoordinator(_ coordinator: AuthCoordinator?) {
+        self.authCoordinator = coordinator
     }
 }
