@@ -8,6 +8,7 @@
 // https://data.messari.io/api/v1/assets/«тутмонета»/metrics
 
 import Foundation
+import Combine
 
 //MARK: - INetworkService
 protocol INetworkService {
@@ -15,10 +16,72 @@ protocol INetworkService {
         with urlString: String,
         completion: @escaping (Result<T, NetworkError>) -> Void
     )
+    // Structured Concurrency
+    func getData<T: Decodable>(
+        with urlString: String
+    ) async throws -> T
+    //Combine
+    func getData<T: Decodable>(
+        with urlString: String
+    ) -> AnyPublisher<T, NetworkError>
 }
 
 //MARK: - NetworkService
 final class NetworkService: INetworkService {
+
+    func getData<T: Decodable>(with urlString: String) -> AnyPublisher<T, NetworkError> {
+        guard let url = URL(string: urlString) else {
+            return Fail(error: NetworkError.urlError)
+                .eraseToAnyPublisher()
+        }
+
+        guard let request = buildRequest(url: url) else {
+            return Fail(error: NetworkError.requestError)
+                .eraseToAnyPublisher()
+        }
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+
+            .tryMap { data, response -> Foundation.Data in
+                if let error = self.checkResponseCode(response) {
+                    throw error
+                }
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { _ in NetworkError.decodingError }
+            .eraseToAnyPublisher()
+    }
+
+    func getData<T: Decodable>(with urlString: String) async throws -> T {
+        guard let url = URL(string: urlString) else {
+            throw NetworkError.urlError
+        }
+
+        guard let request = buildRequest(url: url) else {
+            throw NetworkError.requestError
+        }
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let error = checkResponseCode(response) {
+            throw error
+        }
+        do {
+            let convertedData = try JSONDecoder().decode(T.self, from: data)
+            return convertedData
+        } catch {
+            throw NetworkError.decodingError
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     func getData<T: Decodable>(
         with urlString: String,
