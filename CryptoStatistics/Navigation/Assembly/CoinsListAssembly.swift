@@ -21,7 +21,8 @@ final class CoinsListAssembly: Assembly {
                 coinsListCoordinator: coinsListCoordinator,
                 modelConversationService: try container.resolve(IModelConversionService.self),
                 networkService: try container.resolve(INetworkService.self), 
-                delayManager: try container.resolve(IDelayManager.self)
+                delayManager: try container.resolve(IDelayManager.self), 
+                storageService: try DIContainer.shared.resolve(IStorageService.self)
             )
             let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
             return coinsListViewController

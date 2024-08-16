@@ -35,13 +35,14 @@ final class CoinViewModel: ICoinViewModel {
 
     // MARK: Private properties
 
-    private let coinCoordinator: Coordinator?
-    private let networkService: INetworkService?
-    private let modelConversationService: IModelConversionService?
+    private let coinCoordinator: Coordinator
+    private let networkService: INetworkService
+    private let modelConversationService: IModelConversionService
+
+    private var coinName: String
 
     // MARK: Initialization
 
-    var coinName: String
     init(
         coinCoordinator: Coordinator,
         networkService: INetworkService,
@@ -60,7 +61,7 @@ extension CoinViewModel {
 
     func fetchCoin() {
         switchViewState?(.loading)
-        networkService?.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
+        networkService.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
             guard let self = self else { return }
             switch result {
             case .success(let result):
@@ -95,7 +96,7 @@ private extension CoinViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.outputDateFormat
         let dateString = dateFormatter.string(from: date)
-        let localModel = modelConversationService?.convertServerCoinModelToApp(coinResponse, date: dateString)
+        let localModel = modelConversationService.convertServerCoinModelToApp(coinResponse, date: dateString)
         return localModel
     }
 }

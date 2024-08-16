@@ -16,7 +16,10 @@ final class AuthAssembly: Assembly {
         guard let authCoordinator else {
             throw AssemblyError.coordinatorNotSet("Coordinator Error")
         }
-        let authViewModel = AuthViewModel(authCoordinator: authCoordinator)
+        let authViewModel = AuthViewModel(
+            storageService: try DIContainer.shared.resolve(IStorageService.self),
+            authCoordinator: authCoordinator
+        )
         let authViewController = AuthViewController(authViewModel: authViewModel)
         authViewModel.delegate = authViewController
         return authViewController

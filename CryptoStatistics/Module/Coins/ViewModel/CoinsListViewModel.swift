@@ -41,10 +41,11 @@ final class CoinsListViewModel: ICoinsListViewModel {
 
     //MARK: Private properties
 
-    private let coinsListCoordinator: ICoinsListCoordinator?
-    private let modelConversationService: IModelConversionService?
-    private let networkService: INetworkService?
-    private let delayManager: IDelayManager?
+    private let coinsListCoordinator: ICoinsListCoordinator
+    private let modelConversationService: IModelConversionService
+    private let networkService: INetworkService
+    private let delayManager: IDelayManager
+    private let storageService: IStorageService
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
 
@@ -54,12 +55,14 @@ final class CoinsListViewModel: ICoinsListViewModel {
         coinsListCoordinator: ICoinsListCoordinator,
         modelConversationService: IModelConversionService,
         networkService: INetworkService,
-        delayManager: IDelayManager
+        delayManager: IDelayManager,
+        storageService: IStorageService
     ) {
         self.coinsListCoordinator = coinsListCoordinator
         self.modelConversationService = modelConversationService
         self.networkService = networkService
         self.delayManager = delayManager
+        self.storageService = storageService
     }
 }
 
@@ -67,7 +70,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
 extension CoinsListViewModel {
 
     func fetchCoins(_ reason: RequestReason) {
-        let isRequestEnabled = delayManager?.performRequestIfNeeded { [weak self] in
+        let isRequestEnabled = delayManager.performRequestIfNeeded { [weak self] in
             guard let self = self else { return }
             if reason == .firstLoad {
                 switchViewState?(.loading)
@@ -79,7 +82,7 @@ extension CoinsListViewModel {
             let group = DispatchGroup()
             for (index, coinName) in Constants.coins.enumerated() {
                 group.enter()
-                self.networkService?.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
+                self.networkService.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
                     guard let self = self else { return }
                     switch result {
                     case .success(let result):
@@ -117,7 +120,7 @@ extension CoinsListViewModel {
                     self.switchViewState?(.updated)
                 }
             }
-        } ?? false
+        }
         if !isRequestEnabled {
             self.switchViewState?(.updated)
         }
@@ -148,22 +151,17 @@ extension CoinsListViewModel {
 
     func goToAuth() {
         do {
-            try coinsListCoordinator?.goToAuthViewController()
+            try coinsListCoordinator.goToAuthViewController()
         } catch {
             print(error)
         }
+        storageService.save(isAuth: true)
 
-        do {
-            let storage = try DIContainer.shared.resolve(IStorageService.self)
-            storage.save(isAuth: true)
-        } catch {
-            print(error)
-        }
     }
 
     func goToCoinViewController(with name: String) {
         do {
-            try coinsListCoordinator?.goToCoinViewController(with: name)
+            try coinsListCoordinator.goToCoinViewController(with: name)
         } catch {
             print(error)
         }
@@ -178,7 +176,7 @@ private extension CoinsListViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.outputDateFormat
         let dateString = dateFormatter.string(from: date)
-        let localModel = modelConversationService?.convertServerCoinsModelToApp(coinsListResponse, date: dateString)
+        let localModel = modelConversationService.convertServerCoinsModelToApp(coinsListResponse, date: dateString)
         return localModel
     }
 }

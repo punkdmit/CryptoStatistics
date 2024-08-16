@@ -30,8 +30,13 @@ final class AuthViewModel: IAuthViewModel {
     weak var delegate: AuthViewModelDelegate?
 
     private let authCoordinator: IAuthCoordinator
+    private let storageService: IStorageService
 
-    init(authCoordinator: IAuthCoordinator) {
+    init(
+        storageService: IStorageService,
+        authCoordinator: IAuthCoordinator
+    ) {
+        self.storageService = storageService
         self.authCoordinator = authCoordinator
     }
 
@@ -57,14 +62,7 @@ extension AuthViewModel {
         } catch {
             print(error)
         }
-
-        do {
-            let storage = try DIContainer.shared.resolve(IStorageService.self)
-            storage.save(isAuth: true)
-        } catch {
-            print(error)
-        }
-
+        storageService.save(isAuth: true)
     }
 
     func moveToCoinsListViewController() throws {
