@@ -54,11 +54,11 @@ final class CoinsListViewModel: ICoinsListViewModel {
 
     //MARK: Private properties
 
-    private let coinsListCoordinator: ICoinsListCoordinator?
-    private let modelConversationService: IModelConversionService?
-    private let networkService: INetworkService?
-    private let coinService: ICoinService?
-    private let delayManager = DelayManager()
+    private let coinsListCoordinator: ICoinsListCoordinator
+    private let modelConversationService: IModelConversionService
+    private let networkService: INetworkService
+    private let delayManager: IDelayManager
+    private let storageService: IStorageService
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
     private var cancellable = Set<AnyCancellable>()
@@ -69,11 +69,15 @@ final class CoinsListViewModel: ICoinsListViewModel {
         modelConversationService: IModelConversionService,
         networkService: INetworkService,
         coinService: ICoinService
+        delayManager: IDelayManager,
+        storageService: IStorageService
     ) {
         self.coinsListCoordinator = coinsListCoordinator
         self.modelConversationService = modelConversationService
         self.networkService = networkService
         self.coinService = coinService
+        self.delayManager = delayManager
+        self.storageService = storageService
     }
 }
 
@@ -196,7 +200,7 @@ extension CoinsListViewModel {
             let group = DispatchGroup()
             for (index, coinName) in Constants.coins.enumerated() {
                 group.enter()
-                self.networkService?.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
+                self.networkService.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
                     guard let self = self else { return }
                     switch result {
                     case .success(let result):
@@ -209,7 +213,7 @@ extension CoinsListViewModel {
                     case .failure(let error):
                         switch error {
                         case .clientError(let value):
-                            guard value != 404 else { break } // 404 появляется из за бека
+                            guard value != 404, value != 429 else { break } // появляются из за бека
                             switchViewState?(.failed(errorMessage: "Проверьте подключение"))
                         case .decodingError, .noData, .responseError, .urlError, .requestError:
                             switchViewState?(.failed(errorMessage: "Проблема. Уже исправляем"))
@@ -264,12 +268,21 @@ extension CoinsListViewModel {
 extension CoinsListViewModel {
 
     func goToAuth() {
-        coinsListCoordinator?.goToAuthViewController()
-        StorageService.shared.save(isAuth: false)
+        do {
+            try coinsListCoordinator.goToAuthViewController()
+        } catch {
+            print(error)
+        }
+        storageService.save(isAuth: true)
+
     }
 
     func goToCoinViewController(with name: String) {
-        coinsListCoordinator?.goToCoinViewController(with: name)
+        do {
+            try coinsListCoordinator.goToCoinViewController(with: name)
+        } catch {
+            print(error)
+        }
     }
 }
 
@@ -281,7 +294,7 @@ private extension CoinsListViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.outputDateFormat
         let dateString = dateFormatter.string(from: date)
-        let localModel = modelConversationService?.convertServerCoinsModelToApp(coinsListResponse, date: dateString)
+        let localModel = modelConversationService.convertServerCoinsModelToApp(coinsListResponse, date: dateString)
         return localModel
     }
 }

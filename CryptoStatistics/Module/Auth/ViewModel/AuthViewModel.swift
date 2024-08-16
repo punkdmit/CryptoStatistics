@@ -30,8 +30,13 @@ final class AuthViewModel: IAuthViewModel {
     weak var delegate: AuthViewModelDelegate?
 
     private let authCoordinator: IAuthCoordinator
+    private let storageService: IStorageService
 
-    init(authCoordinator: IAuthCoordinator) {
+    init(
+        storageService: IStorageService,
+        authCoordinator: IAuthCoordinator
+    ) {
+        self.storageService = storageService
         self.authCoordinator = authCoordinator
     }
 
@@ -49,12 +54,22 @@ extension AuthViewModel {
             delegate?.showError(with: TextFieldError.passwordError.rawValue, .password)
             hasError = true
         }
+
         guard !hasError else { return }
-        moveToCoinsListViewController()
-        StorageService.shared.save(isAuth: true)
+
+        do {
+            try moveToCoinsListViewController()
+        } catch {
+            print(error)
+        }
+        storageService.save(isAuth: true)
     }
 
-    func moveToCoinsListViewController() {
-        authCoordinator.goToListViewController()
+    func moveToCoinsListViewController() throws {
+        do {
+            try authCoordinator.goToListViewController()
+        } catch {
+            print(error)
+        }
     }
 }
