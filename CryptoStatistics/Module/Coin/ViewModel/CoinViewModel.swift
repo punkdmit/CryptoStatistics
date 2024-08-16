@@ -12,7 +12,7 @@ import Combine
 
 protocol ICoinViewModel {
     var coin: CoinConvertedModel? { get }
-    var didUpdateCoin: AnyPublisher<CoinConvertedModel?, Never> { get set }
+    var didUpdateCoin: ((CoinConvertedModel?) -> Void)? { get set }
     var switchViewState: ((_ state: CurrentState) -> Void)? { get set }
     func fetchCoin()
 }
@@ -30,22 +30,26 @@ final class CoinViewModel: ICoinViewModel {
     // MARK: Internal properties
 
     var coin: CoinConvertedModel?
-    var didUpdateCoin: AnyPublisher<CoinConvertedModel?, Never>
+    var didUpdateCoin: ((CoinConvertedModel?) -> Void)?
     var switchViewState: ((_ state: CurrentState) -> Void)?
 
     // MARK: Private properties
 
-    private let networkService: INetworkService?
-    private let modelConversationService: IModelConversionService?
+    private let coinCoordinator: Coordinator
+    private let networkService: INetworkService
+    private let modelConversationService: IModelConversionService
+
+    private var coinName: String
 
     // MARK: Initialization
 
-    var coinName: String
     init(
-        networkService: INetworkService?,
-        modelConversationService: IModelConversionService?,
+        coinCoordinator: Coordinator,
+        networkService: INetworkService,
+        modelConversationService: IModelConversionService,
         coinName: String
     ) {
+        self.coinCoordinator = coinCoordinator
         self.networkService = networkService
         self.modelConversationService = modelConversationService
         self.coinName = coinName
@@ -57,19 +61,19 @@ extension CoinViewModel {
 
     func fetchCoin() {
         switchViewState?(.loading)
-        networkService?.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
+        networkService.getData(with: Endpoint.coin(coinName).url) { [weak self] (result: Result<CoinResponse, NetworkError>) in
             guard let self = self else { return }
             switch result {
             case .success(let result):
                 let convertedModel = convertToLocaleModel(result)
                 if let convertedModel = convertedModel {
                     self.coin = convertedModel
-                    self.didUpdateCoin(self.coin)
-
+                    self.didUpdateCoin?(self.coin)
                 }
             case .failure(let error):
                 switch error {
-                case .clientError(_):
+                case .clientError(let value):
+                    guard value != 404, value != 429 else { break } // появля.тся из за бека
                     switchViewState?(.failed(errorMessage: "Проверьте подключение"))
                 case .decodingError, .noData, .responseError, .urlError, .requestError:
                     switchViewState?(.failed(errorMessage: "Проблема. Уже исправляем"))
@@ -92,7 +96,7 @@ private extension CoinViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.outputDateFormat
         let dateString = dateFormatter.string(from: date)
-        let localModel = modelConversationService?.convertServerCoinModelToApp(coinResponse, date: dateString)
+        let localModel = modelConversationService.convertServerCoinModelToApp(coinResponse, date: dateString)
         return localModel
     }
 }

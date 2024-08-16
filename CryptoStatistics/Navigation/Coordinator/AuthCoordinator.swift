@@ -8,8 +8,8 @@
 import UIKit
 
 protocol IAuthCoordinator: Coordinator {
-    func goToListViewController()
-    func goToListViewController(in window: UIWindow)
+    func goToListViewController() throws
+    func goToListViewController(in window: UIWindow) throws
 }
 
 // MARK: - AuthCoordinator
@@ -17,13 +17,13 @@ final class AuthCoordinator: IAuthCoordinator {
 
     var childCoordinators: [any Coordinator] = []
     var navigationController: UINavigationController
-    private let authContainer: AuthContainer
+    private weak var authAssembly: AuthAssembly?
 
     init(      
-        authContainer: AuthContainer,
+        authAssembly: AuthAssembly,
         navigationController: UINavigationController
     ) {
-        self.authContainer = authContainer
+        self.authAssembly = authAssembly
         self.navigationController = navigationController
     }
 }
@@ -31,37 +31,62 @@ final class AuthCoordinator: IAuthCoordinator {
 //MARK: - Internal methods
 extension AuthCoordinator {
     
-    func start(in window: UIWindow) {
+    func start(in window: UIWindow) throws {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        let authViewController = authContainer.makeAssembly(coordinator: self).view()
-        navigationController.pushViewController(authViewController, animated: true)
+        do {
+            let authViewController = try authAssembly?.view()
+            if let authViewController {
+                navigationController.pushViewController(authViewController, animated: true)
+            }
+        } catch let error {
+            throw error
+        }
     }
 
-    func start() {
-        navigationController.switchRootController(
-            to: [authContainer.makeAssembly(coordinator: self).view()],
-            animated: true,
-            options: .transitionFlipFromLeft
-        )
+    func start() throws {
+        do {
+            let authViewController = try authAssembly?.view()
+            if let authViewController {
+                navigationController.switchRootController(
+                    to: [authViewController],
+                    animated: true,
+                    options: .transitionFlipFromLeft
+                )
+            }
+        } catch let error {
+            throw error
+        }
     }
 
-    func goToListViewController() {
+    func goToListViewController() throws {
+        let coinsListAssembly = CoinsListAssembly()
         let coinsListCoordinator = CoinsListCoordinator(
             navigationController: navigationController,
-            coinsListContainer: CoinsListContainer()
+            coinsListAssembly: coinsListAssembly
         )
+        coinsListAssembly.setCoordinator(coinsListCoordinator)
         childCoordinators.append(coinsListCoordinator)
-        coinsListCoordinator.start()
+        do {
+            try coinsListCoordinator.start()
+        } catch let error {
+            throw error
+        }
     }
 
     /// вызывает метод start(in: window) если пользователь авторизован
-    func goToListViewController(in window: UIWindow) {
+    func goToListViewController(in window: UIWindow) throws {
+        let coinsListAssembly = CoinsListAssembly()
         let coinsListCoordinator = CoinsListCoordinator(
             navigationController: navigationController,
-            coinsListContainer: CoinsListContainer()
+            coinsListAssembly: coinsListAssembly
         )
+        coinsListAssembly.setCoordinator(coinsListCoordinator)
         childCoordinators.append(coinsListCoordinator)
-        coinsListCoordinator.start(in: window)
+        do {
+            try coinsListCoordinator.start(in: window)
+        } catch let error {
+            throw error
+        }
     }
 }

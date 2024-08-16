@@ -11,18 +11,24 @@ final class CoinCoordinator: Coordinator {
 
     var childCoordinators: [any Coordinator] = []
     var navigationController: UINavigationController
-    private let coinContainer: CoinContainer
+    private weak var coinAssembly: CoinAssembly?
 
     init(
         navigationController: UINavigationController,
-        coinContainer: CoinContainer
+        coinAssembly: CoinAssembly
     ) {
         self.navigationController = navigationController
-        self.coinContainer = coinContainer
+        self.coinAssembly = coinAssembly
     }
 
-    func start(with name: String) {
-        let coinViewController = coinContainer.makeAssembly(coordinator: self).view(with: name)
-        navigationController.pushViewController(coinViewController, animated: true)
+    func start(with name: String) throws {
+        do {
+            let coinViewController = try coinAssembly?.view(with: name)
+            if let coinViewController {
+                navigationController.pushViewController(coinViewController, animated: true)
+            }
+        } catch let error {
+            throw error
+        }
     }
 }

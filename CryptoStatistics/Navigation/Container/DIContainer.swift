@@ -7,14 +7,35 @@
 
 import Foundation
 
-final class DIContainer {
+//MARK: - IDIContainer
+protocol IDIContainer {
+    func register<T>(_ type: T.Type, _ factory: @escaping () -> AnyObject)
+    func resolve<T>(_ type: T.Type) throws -> T
+}
+
+//MARK: - DIContainer
+final class DIContainer: IDIContainer {
 
     static let shared = DIContainer()
     private init() {}
 
-    var dependencies = [String : AnyObject]()
+    private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
 
-    func register<T>(_ type: T.Type, _ object: T) {
-        
+    var dependencies = [String: () -> AnyObject]()
+
+    func register<T>(_ type: T.Type, _ factory: @escaping () -> AnyObject) {
+        concurrentQueue.async(flags: .barrier) {
+            self.dependencies["\(type)"] = factory
+        }
+    }
+
+    func resolve<T>(_ type: T.Type) throws -> T {
+        try concurrentQueue.sync {
+            guard let factory = dependencies["\(type)"], let dependency = factory() as? T else {
+                throw DIContainerError.dependencyNotFound("Dependency error")
+            }
+            return dependency
+        }
     }
 }
+

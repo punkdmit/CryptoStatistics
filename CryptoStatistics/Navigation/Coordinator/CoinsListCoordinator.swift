@@ -8,8 +8,8 @@
 import UIKit
 
 protocol ICoinsListCoordinator: Coordinator {
-    func goToAuthViewController()
-    func goToCoinViewController(with name: String)
+    func goToAuthViewController() throws
+    func goToCoinViewController(with name: String) throws
 }
 
 // MARK: - CoinsListCoordinator
@@ -17,53 +17,76 @@ final class CoinsListCoordinator: ICoinsListCoordinator {
 
     var childCoordinators: [any Coordinator] = []
     var navigationController: UINavigationController
-
-    private let coinsListContainer: CoinsListContainer
+    private weak var coinsListAssembly: CoinsListAssembly?
 
     init(
         navigationController: UINavigationController,
-        coinsListContainer: CoinsListContainer
+        coinsListAssembly: CoinsListAssembly
     ) {
         self.navigationController = navigationController
-        self.coinsListContainer = coinsListContainer
+        self.coinsListAssembly = coinsListAssembly
     }
 }
 
 //MARK: - Internal methods
 extension CoinsListCoordinator {
 
-    func start() {
-        let coinsListViewController = coinsListContainer.makeAssembly(coordinator: self).view()
-        navigationController.switchRootController(
-            to: [coinsListViewController],
-            animated: true,
-            options: .transitionFlipFromRight
-        )
+    func start() throws {
+        do {
+            let coinsListViewController = try coinsListAssembly?.view()
+            if let coinsListViewController {
+                navigationController.switchRootController(
+                    to: [coinsListViewController],
+                    animated: true,
+                    options: .transitionFlipFromRight
+                )
+            }
+        } catch let error {
+            throw error
+        }
     }
 
     /// метод если пользователь авторизован
-    func start(in window: UIWindow) {
+    func start(in window: UIWindow) throws {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        let coinsListViewController = coinsListContainer.makeAssembly(coordinator: self).view()
-        navigationController.pushViewController(coinsListViewController, animated: true)
+        do {
+            let coinsListViewController = try coinsListAssembly?.view()
+            if let coinsListViewController {
+                navigationController.pushViewController(coinsListViewController, animated: true)
+            }
+        } catch let error {
+            throw error
+        }
     }
 
     /// возвращает на экран авторизации
-    func goToAuthViewController() {
+    func goToAuthViewController() throws {
+        let authAssembly = AuthAssembly()
         let authCoordinator = AuthCoordinator(
-            authContainer: AuthContainer(),
+            authAssembly: authAssembly,
             navigationController: navigationController
         )
-        authCoordinator.start()
+        authAssembly.setCoordinator(authCoordinator)
+        do {
+            try authCoordinator.start()
+        } catch let error {
+            throw error
+        }
     }
 
-    func goToCoinViewController(with name: String) {
+    func goToCoinViewController(with name: String) throws {
+        let coinAssembly = CoinAssembly()
         let coinCoordinator = CoinCoordinator(
             navigationController: navigationController,
-            coinContainer: CoinContainer()
+            coinAssembly: coinAssembly
         )
+        coinAssembly.setCoordinator(coinCoordinator)
         childCoordinators.append(coinCoordinator)
-        coinCoordinator.start(with: name)
+        do {
+            try coinCoordinator.start(with: name)
+        } catch let error {
+            throw error
+        }
     }
 }

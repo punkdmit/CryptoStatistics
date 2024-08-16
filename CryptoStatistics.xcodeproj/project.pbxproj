@@ -35,6 +35,8 @@
 		F86940DF2C46853200F69CFF /* CoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86940DE2C46853200F69CFF /* CoinViewModel.swift */; };
 		F86C0DC72C52A1F9006D3DCE /* AuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C0DC62C52A1F9006D3DCE /* AuthAssembly.swift */; };
 		F87378F22C383E57004BC6A4 /* ModelConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87378F12C383E57004BC6A4 /* ModelConversionService.swift */; };
+		F882DDBF2C5E416D00BD32B9 /* DIContainerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F882DDBE2C5E416D00BD32B9 /* DIContainerError.swift */; };
+		F882DDC12C5E419500BD32B9 /* AssemblyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F882DDC02C5E419500BD32B9 /* AssemblyError.swift */; };
 		F88457162C53EC9E001606E2 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88457152C53EC9E001606E2 /* Assembly.swift */; };
 		F884571A2C5427C6001606E2 /* CoinsListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88457192C5427C6001606E2 /* CoinsListAssembly.swift */; };
 		F8C3156C2C46984D00723CEF /* CoinConvertedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C3156B2C46984D00723CEF /* CoinConvertedModel.swift */; };
@@ -85,6 +87,8 @@
 		F86940DE2C46853200F69CFF /* CoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewModel.swift; sourceTree = "<group>"; };
 		F86C0DC62C52A1F9006D3DCE /* AuthAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAssembly.swift; sourceTree = "<group>"; };
 		F87378F12C383E57004BC6A4 /* ModelConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelConversionService.swift; sourceTree = "<group>"; };
+		F882DDBE2C5E416D00BD32B9 /* DIContainerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainerError.swift; sourceTree = "<group>"; };
+		F882DDC02C5E419500BD32B9 /* AssemblyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyError.swift; sourceTree = "<group>"; };
 		F88457152C53EC9E001606E2 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		F88457192C5427C6001606E2 /* CoinsListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListAssembly.swift; sourceTree = "<group>"; };
 		F8C3156B2C46984D00723CEF /* CoinConvertedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinConvertedModel.swift; sourceTree = "<group>"; };
@@ -146,6 +150,9 @@
 			isa = PBXGroup;
 			children = (
 				F82725462C31773F006AAE30 /* TextFieldError.swift */,
+				F85EDC1F2C395DD10094BC15 /* NetworkError.swift */,
+				F882DDBE2C5E416D00BD32B9 /* DIContainerError.swift */,
+				F882DDC02C5E419500BD32B9 /* AssemblyError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -273,7 +280,6 @@
 			children = (
 				F85EDC1B2C3941D40094BC15 /* NetworkService.swift */,
 				F85EDC1D2C395D3A0094BC15 /* Endpoint.swift */,
-				F85EDC1F2C395DD10094BC15 /* NetworkError.swift */,
 				F85EDC212C39614D0094BC15 /* HTTPType.swift */,
 			);
 			path = Networking;
@@ -411,8 +417,8 @@
 				F8F234B72C28593A00831D30 /* AppConstants.swift */,
 				F8F234B92C28597F00831D30 /* Fonts.swift */,
 				F8F234BB2C285C0300831D30 /* Assets.swift */,
-				F827254D2C31D65F006AAE30 /* Error */,
 				F84C81CC2C481D4C0072623D /* ScreenState.swift */,
+				F827254D2C31D65F006AAE30 /* Error */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -581,6 +587,7 @@
 			files = (
 				F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */,
 				F85EDC202C395DD10094BC15 /* NetworkError.swift in Sources */,
+				F882DDC12C5E419500BD32B9 /* AssemblyError.swift in Sources */,
 				F85EDC1E2C395D3A0094BC15 /* Endpoint.swift in Sources */,
 				F86C0DC72C52A1F9006D3DCE /* AuthAssembly.swift in Sources */,
 				F8F234BA2C28597F00831D30 /* Fonts.swift in Sources */,
@@ -598,6 +605,7 @@
 				F8445A132C2D62E10091BA34 /* CoinsListCoordinator.swift in Sources */,
 				F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */,
 				F857F1AB2C43FE74003A2765 /* DelayManager.swift in Sources */,
+				F882DDBF2C5E416D00BD32B9 /* DIContainerError.swift in Sources */,
 				F82725472C31773F006AAE30 /* TextFieldError.swift in Sources */,
 				F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */,
 				F863C8352C5790D100DA7780 /* CoinAssembly.swift in Sources */,
