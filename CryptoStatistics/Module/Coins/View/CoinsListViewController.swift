@@ -164,11 +164,10 @@ private extension CoinsListViewController {
 
     //MARK: Async Await
     func fetchCoins() {
-        Task {
+        Task { @MainActor in
             try await coinsListViewModel.fetchCoins(.firstLoad)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            self.tableView.reloadData()
+
         }
     }
 
@@ -183,8 +182,8 @@ private extension CoinsListViewController {
                     case .failure(let error):
                         break
                     }
-                }, receiveValue: { _ in
-                    self.tableView.reloadData()
+                }, receiveValue: { [weak self] _ in
+                    self?.tableView.reloadData()
                 })
             .store(in: &cancellable)
 

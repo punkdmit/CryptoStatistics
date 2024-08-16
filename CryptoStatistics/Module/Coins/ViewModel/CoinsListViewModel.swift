@@ -101,19 +101,20 @@ extension CoinsListViewModel {
                         break
                     }
                 },
-                receiveValue: { response in
+                receiveValue: { [weak self] response in
+                    guard let self = self else { return }
                     var temporaryCoinsArray: [CoinsListTableViewCellModel?] = Array(
                         repeating: nil,
                         count: Constants.coins.count
                     )
 
                     for (index, coin) in response {
-                        let convertedCoin = self.convertToLocaleModel(coin)
-                        self.concurrentQueue.async(flags: .barrier) {
+                        let convertedCoin = convertToLocaleModel(coin)
+                        concurrentQueue.async(flags: .barrier) {
                             temporaryCoinsArray[index] = convertedCoin
                         }
                     }
-                    self.coinsListSubject.send(temporaryCoinsArray.compactMap { $0 })
+                    coinsListSubject.send(temporaryCoinsArray.compactMap { $0 })
                 }
             )
             .store(in: &cancellable)
