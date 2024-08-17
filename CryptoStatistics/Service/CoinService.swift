@@ -20,6 +20,8 @@ final class CoinService: ICoinService {
         self.networkService = networkService
     }
 
+    //MARK: Async Await
+
     func fetchCoin(_ endpoint: Endpoint) async throws -> CoinResponse {
         do {
             return try await networkService.getData(with: endpoint.url)
@@ -27,6 +29,8 @@ final class CoinService: ICoinService {
             throw error
         }
     }
+
+    //MARK: Combine
 
     func fetchCoin(_ endpoint: Endpoint) -> AnyPublisher<CoinResponse, NetworkError> {
         networkService.getData(with: endpoint.url)

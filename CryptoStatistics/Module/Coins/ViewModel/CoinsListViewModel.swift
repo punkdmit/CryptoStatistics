@@ -44,10 +44,14 @@ final class CoinsListViewModel: ICoinsListViewModel {
 
     var convertedCoinsArray: [CoinsListTableViewCellModel] = []
 
+    //MARK: Combine
+
     private let coinsListSubject = PassthroughSubject<[CoinsListTableViewCellModel], NetworkError>()
     var coinsListPublisher: AnyPublisher<[CoinsListTableViewCellModel], NetworkError> {
         return coinsListSubject.eraseToAnyPublisher()
     }
+
+    //MARK: Completion
 
     var didUpdateCoinsList: (() -> Void)?
     var switchViewState: ((_ state: CurrentState) -> Void)?
@@ -59,26 +63,27 @@ final class CoinsListViewModel: ICoinsListViewModel {
     private let networkService: INetworkService
     private let delayManager: IDelayManager
     private let storageService: IStorageService
-    private let coinService: ICoinService?
+    private let coinService: ICoinService
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
     private var cancellable = Set<AnyCancellable>()
+
     //MARK: Initialization
 
     init(
         coinsListCoordinator: ICoinsListCoordinator,
         modelConversationService: IModelConversionService,
         networkService: INetworkService,
-        coinService: ICoinService
         delayManager: IDelayManager,
-        storageService: IStorageService
+        storageService: IStorageService,
+        coinService: ICoinService
     ) {
         self.coinsListCoordinator = coinsListCoordinator
         self.modelConversationService = modelConversationService
         self.networkService = networkService
-        self.coinService = coinService
         self.delayManager = delayManager
         self.storageService = storageService
+        self.coinService = coinService
     }
 }
 
@@ -86,7 +91,6 @@ final class CoinsListViewModel: ICoinsListViewModel {
 extension CoinsListViewModel {
 
     func fetchCoinsCombine(_ reason: RequestReason) {
-        guard let coinService else { return }
         let publishers = Constants.coins.enumerated().map { (index, name) in
             return coinService.fetchCoin(.coin(name))
                 .map { coin -> (Int, CoinResponse) in
@@ -125,7 +129,6 @@ extension CoinsListViewModel {
             .store(in: &cancellable)
         }
 
-
     func fetchCoins(_ reason: RequestReason) async throws {
         let isRequestEnabled = delayManager.performRequestIfNeeded { [weak self] in
             guard let self = self else { return }
@@ -145,9 +148,7 @@ extension CoinsListViewModel {
             for (index, name) in Constants.coins.enumerated() {
                 taskGroup.addTask {
                     do {
-                        guard let coin = try await self.coinService?.fetchCoin(.coin(name)) else {
-                            return (index, nil)
-                        }
+                        let coin = try await self.coinService.fetchCoin(.coin(name))
                         let coinsListTableViewCellModel = self.convertToLocaleModel(coin)
                         return (index, coinsListTableViewCellModel)
                     } catch {

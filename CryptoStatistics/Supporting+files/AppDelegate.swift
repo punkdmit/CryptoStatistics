@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         container.register(IModelConversionService.self) { ModelConversionService() }
         container.register(IDelayManager.self) { DelayManager() }
 
+        container.register(ICoinService.self) {
+            CoinService(networkService: try self.container.resolve(INetworkService.self) )
+        }
         return true
     }
 

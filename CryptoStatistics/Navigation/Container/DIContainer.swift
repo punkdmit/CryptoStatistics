@@ -9,7 +9,7 @@ import Foundation
 
 //MARK: - IDIContainer
 protocol IDIContainer {
-    func register<T>(_ type: T.Type, _ factory: @escaping () -> AnyObject)
+    func register<T>(_ type: T.Type, _ factory: @escaping () throws -> AnyObject)
     func resolve<T>(_ type: T.Type) throws -> T
 }
 
@@ -21,9 +21,9 @@ final class DIContainer: IDIContainer {
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
 
-    var dependencies = [String: () -> AnyObject]()
+    var dependencies = [String: () throws -> AnyObject]()
 
-    func register<T>(_ type: T.Type, _ factory: @escaping () -> AnyObject) {
+    func register<T>(_ type: T.Type, _ factory: @escaping () throws -> AnyObject) {
         concurrentQueue.async(flags: .barrier) {
             self.dependencies["\(type)"] = factory
         }
@@ -31,8 +31,8 @@ final class DIContainer: IDIContainer {
 
     func resolve<T>(_ type: T.Type) throws -> T {
         try concurrentQueue.sync {
-            guard let factory = dependencies["\(type)"], let dependency = factory() as? T else {
-                throw DIContainerError.dependencyNotFound("Dependency error")
+            guard let factory = dependencies["\(type)"], let dependency = try factory() as? T else {
+                throw DIContainerError.dependencyNotFound("\(type)")
             }
             return dependency
         }

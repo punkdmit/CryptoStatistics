@@ -29,6 +29,8 @@ protocol INetworkService {
 //MARK: - NetworkService
 final class NetworkService: INetworkService {
 
+    //MARK: Combine
+
     func getData<T: Decodable>(with urlString: String) -> AnyPublisher<T, NetworkError> {
         guard let url = URL(string: urlString) else {
             return Fail(error: NetworkError.urlError)
@@ -53,6 +55,8 @@ final class NetworkService: INetworkService {
             .eraseToAnyPublisher()
     }
 
+    //MARK: Async Await
+
     func getData<T: Decodable>(with urlString: String) async throws -> T {
         guard let url = URL(string: urlString) else {
             throw NetworkError.urlError
@@ -74,14 +78,7 @@ final class NetworkService: INetworkService {
         }
     }
 
-
-
-
-
-
-
-
-
+    //MARK: Completion
 
     func getData<T: Decodable>(
         with urlString: String,

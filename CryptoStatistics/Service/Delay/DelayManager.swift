@@ -11,7 +11,7 @@ protocol IDelayManager {
     func performRequestIfNeeded(completion: @escaping () -> Void) -> Bool
 }
 
-final class DelayManager {
+final class DelayManager: IDelayManager {
 
     enum DelayType {
         case throttling(TimeInterval)

@@ -20,9 +20,10 @@ final class CoinsListAssembly: Assembly {
             let coinsListViewModel = CoinsListViewModel(
                 coinsListCoordinator: coinsListCoordinator,
                 modelConversationService: try container.resolve(IModelConversionService.self),
-                networkService: try container.resolve(INetworkService.self), 
-                delayManager: try container.resolve(IDelayManager.self), 
-                storageService: try DIContainer.shared.resolve(IStorageService.self)
+                networkService: try container.resolve(INetworkService.self),
+                delayManager: try container.resolve(IDelayManager.self),
+                storageService: try container.resolve(IStorageService.self),
+                coinService: try DIContainer.shared.resolve(ICoinService.self)
             )
             let coinsListViewController = CoinsListViewController(coinsListViewModel: coinsListViewModel)
             return coinsListViewController

@@ -78,10 +78,10 @@ final class CoinsListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupViewModel()
-//        coinsListViewModel.fetchCoins(.firstLoad)
+        coinsListViewModel.fetchCoins(.firstLoad)
 
         /// Async Await
-        fetchCoins()
+//        fetchCoins()
     }
 
     // MARK: Initialization
@@ -162,31 +162,7 @@ private extension CoinsListViewController {
         }
     }
 
-    //MARK: Async Await
-    func fetchCoins() {
-        Task { @MainActor in
-            try await coinsListViewModel.fetchCoins(.firstLoad)
-            self.tableView.reloadData()
-
-        }
-    }
-
     func setupViewModel() {
-        //делаем подписку на методах делегата на coinsListPublisher
-        coinsListViewModel.coinsListPublisher
-            .sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        break
-                    }
-                }, receiveValue: { [weak self] _ in
-                    self?.tableView.reloadData()
-                })
-            .store(in: &cancellable)
-
         coinsListViewModel.didUpdateCoinsList = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -196,19 +172,21 @@ private extension CoinsListViewController {
 
         coinsListViewModel.switchViewState = { [weak self] state in
             guard let self = self else { return }
-            currentState = state
-            switch currentState {
-            case .loading:
-                activityIndicator.startAnimating()
-            case .loaded:
-                activityIndicator.stopAnimating()
-                setupRefreshControl()
-            case .updated:
-                refreshControl.endRefreshing()
-            case .failed(let errorMessage):
-                showErrorAlert(with: errorMessage)
-            case .none:
-                break
+            DispatchQueue.main.async {
+                self.currentState = state
+                switch self.currentState {
+                case .loading:
+                    self.activityIndicator.startAnimating()
+                case .loaded:
+                    self.activityIndicator.stopAnimating()
+                    self.setupRefreshControl()
+                case .updated:
+                    self.refreshControl.endRefreshing()
+                case .failed(let errorMessage):
+                    self.showErrorAlert(with: errorMessage)
+                case .none:
+                    break
+                }
             }
         }
     }
@@ -272,7 +250,6 @@ private extension CoinsListViewController {
         }
     }
 
-
     func showErrorAlert(with title: String) {
         DispatchQueue.main.async {
             self.errorAlertController.title = title
@@ -288,4 +265,38 @@ private extension CoinsListViewController {
         okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
         errorAlertController.addAction(okAction)
     }
+}
+
+//MARK: - Async Await methods
+private extension CoinsListViewController {
+
+    func fetchCoins() {
+        Task { @MainActor in
+            try await coinsListViewModel.fetchCoins(.firstLoad)
+            self.tableView.reloadData()
+
+        }
+    }
+}
+
+//MARK: - Combine methods
+private extension CoinsListViewController {
+
+    ///метод подписки на паблишер (делаем в ините)
+    ///и делаем подписку в методах делегата таблицы на coinsListPublisher во viewModel
+    /*
+    coinsListViewModel.coinsListPublisher
+        .sink(
+            receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    break
+                }
+            }, receiveValue: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
+        .store(in: &cancellable)
+     */
 }
