@@ -7,7 +7,11 @@
 
 import Foundation
 
-class DelayManager {
+protocol IDelayManager {
+    func performRequestIfNeeded(completion: @escaping () -> Void) -> Bool
+}
+
+final class DelayManager {
 
     enum DelayType {
         case throttling(TimeInterval)
@@ -16,7 +20,7 @@ class DelayManager {
     // MARK: Constants
 
     private enum Constants {
-        static let interval: TimeInterval = 10
+        static let interval: TimeInterval = 15
     }
 
     private var isRequestEnabled = true

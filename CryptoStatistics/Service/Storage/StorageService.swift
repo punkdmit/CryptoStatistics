@@ -12,8 +12,14 @@ extension String {
     static let key = "isAuth"
 }
 
+//MARK: - IStorageService
+protocol IStorageService {
+    func save(isAuth: Bool)
+    func load() -> Bool
+}
+
 //MARK: - StorageService
-final class StorageService {
+final class StorageService: IStorageService {
 
     //MARK: Private properties
 
@@ -21,8 +27,8 @@ final class StorageService {
 
     //MARK: Initialization
 
-    static let shared = StorageService()
-    private init() {}
+//    static let shared = StorageService()
+//    private init() {}
 }
 
 //MARK: - Internal methods

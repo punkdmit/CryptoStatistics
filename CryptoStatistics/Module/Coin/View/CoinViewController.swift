@@ -144,9 +144,21 @@ private extension CoinViewController {
     }
 
     func setupViewModel() {
-        coinViewModel.didUpdateCoin
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] coin in
+//        coinViewModel.didUpdateCoin
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] coin in
+//                guard let coin = coin, let self = self else { return }
+//                self.navigationItem.title = coin.coinName
+//                self.openPriceLabel.text = Constants.openPriceLabelText + "\(coin.openDayPrice)$"
+//                self.closePriceLabel.text = Constants.сlosePriceLabelText + "\(coin.closeDayPrice)$"
+//                self.percentsLabel.text = Constants.percentsLabelText + "\(coin.dayDynamicPercents)%"
+//                self.currentPriceLabel.text = Constants.currentPriceLabelText + "\(coin.currentPrice)$"
+//                self.dateLabel.text = "\(coin.date)"
+//                self.percentsLabelColor = (coin.dayDynamicPercents > 0) ? Assets.Colors.lime : Assets.Colors.red
+//            }.store(in: &cancellable)
+
+        coinViewModel.didUpdateCoin = { [weak self] coin in
+            DispatchQueue.main.async {
                 guard let coin = coin, let self = self else { return }
                 self.navigationItem.title = coin.coinName
                 self.openPriceLabel.text = Constants.openPriceLabelText + "\(coin.openDayPrice)$"
@@ -154,8 +166,11 @@ private extension CoinViewController {
                 self.percentsLabel.text = Constants.percentsLabelText + "\(coin.dayDynamicPercents)%"
                 self.currentPriceLabel.text = Constants.currentPriceLabelText + "\(coin.currentPrice)$"
                 self.dateLabel.text = "\(coin.date)"
-                self.percentsLabelColor = (coin.dayDynamicPercents > 0) ? Assets.Colors.lime : Assets.Colors.red
-            }.store(in: &cancellable)
+                self.percentsLabelColor = (coin.dayDynamicPercents > 0)
+                ? Assets.Colors.lime
+                : Assets.Colors.red
+            }
+        }
 
         coinViewModel.switchViewState = { [weak self] state in
             DispatchQueue.main.async {
