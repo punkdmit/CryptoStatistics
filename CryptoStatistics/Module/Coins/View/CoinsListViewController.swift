@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 // MARK: - Request Reasons
 enum RequestReason {
@@ -36,6 +37,7 @@ final class CoinsListViewController: UIViewController {
 
     private var coinsListViewModel: ICoinsListViewModel
     private let refreshControl = UIRefreshControl()
+    private var cancellable = Set<AnyCancellable>()
 
     private let sortAlertController = UIAlertController(
         title: Constants.alertControllerTitle,
@@ -76,7 +78,10 @@ final class CoinsListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupViewModel()
-        coinsListViewModel.fetchCoins(.firstLoad)
+//        coinsListViewModel.fetchCoins(.firstLoad)
+
+        /// Async Await
+        fetchCoins()
     }
 
     // MARK: Initialization
@@ -157,7 +162,31 @@ private extension CoinsListViewController {
         }
     }
 
+    //MARK: Async Await
+    func fetchCoins() {
+        Task { @MainActor in
+            try await coinsListViewModel.fetchCoins(.firstLoad)
+            self.tableView.reloadData()
+
+        }
+    }
+
     func setupViewModel() {
+        //делаем подписку на методах делегата на coinsListPublisher
+        coinsListViewModel.coinsListPublisher
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        break
+                    }
+                }, receiveValue: { [weak self] _ in
+                    self?.tableView.reloadData()
+                })
+            .store(in: &cancellable)
+
         coinsListViewModel.didUpdateCoinsList = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {

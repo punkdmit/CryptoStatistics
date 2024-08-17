@@ -34,6 +34,7 @@
 		F866062D2C5BD0F900415DB0 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F866062C2C5BD0F900415DB0 /* DIContainer.swift */; };
 		F86940DF2C46853200F69CFF /* CoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86940DE2C46853200F69CFF /* CoinViewModel.swift */; };
 		F86C0DC72C52A1F9006D3DCE /* AuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C0DC62C52A1F9006D3DCE /* AuthAssembly.swift */; };
+		F8733BE72C5FC1600087262F /* CoinService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8733BE62C5FC1600087262F /* CoinService.swift */; };
 		F87378F22C383E57004BC6A4 /* ModelConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87378F12C383E57004BC6A4 /* ModelConversionService.swift */; };
 		F882DDBF2C5E416D00BD32B9 /* DIContainerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F882DDBE2C5E416D00BD32B9 /* DIContainerError.swift */; };
 		F882DDC12C5E419500BD32B9 /* AssemblyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F882DDC02C5E419500BD32B9 /* AssemblyError.swift */; };
@@ -86,6 +87,7 @@
 		F866062C2C5BD0F900415DB0 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		F86940DE2C46853200F69CFF /* CoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewModel.swift; sourceTree = "<group>"; };
 		F86C0DC62C52A1F9006D3DCE /* AuthAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAssembly.swift; sourceTree = "<group>"; };
+		F8733BE62C5FC1600087262F /* CoinService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinService.swift; sourceTree = "<group>"; };
 		F87378F12C383E57004BC6A4 /* ModelConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelConversionService.swift; sourceTree = "<group>"; };
 		F882DDBE2C5E416D00BD32B9 /* DIContainerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainerError.swift; sourceTree = "<group>"; };
 		F882DDC02C5E419500BD32B9 /* AssemblyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyError.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		F82725482C319951006AAE30 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				F8733BE62C5FC1600087262F /* CoinService.swift */,
 				F85EDC1A2C3941AD0094BC15 /* Networking */,
 				F85EDC182C3941970094BC15 /* Storage */,
 				F85EDC192C3941A40094BC15 /* Converter */,
@@ -587,6 +590,7 @@
 			files = (
 				F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */,
 				F85EDC202C395DD10094BC15 /* NetworkError.swift in Sources */,
+				F8733BE72C5FC1600087262F /* CoinService.swift in Sources */,
 				F882DDC12C5E419500BD32B9 /* AssemblyError.swift in Sources */,
 				F85EDC1E2C395D3A0094BC15 /* Endpoint.swift in Sources */,
 				F86C0DC72C52A1F9006D3DCE /* AuthAssembly.swift in Sources */,
