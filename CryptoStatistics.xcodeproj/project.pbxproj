@@ -18,6 +18,7 @@
 		F8445A172C2D6C530091BA34 /* CoinsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */; };
 		F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */; };
 		F84C81CD2C481D4C0072623D /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84C81CC2C481D4C0072623D /* ScreenState.swift */; };
+		F85434D32C750A510097F4E4 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85434D22C750A510097F4E4 /* CoreDataService.swift */; };
 		F857F1AB2C43FE74003A2765 /* DelayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F857F1AA2C43FE74003A2765 /* DelayManager.swift */; };
 		F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F859111E2C2713AC0014B560 /* AppDelegate.swift */; };
 		F85911212C2713AC0014B560 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85911202C2713AC0014B560 /* SceneDelegate.swift */; };
@@ -26,6 +27,8 @@
 		F859112B2C2713B10014B560 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F859112A2C2713B10014B560 /* Base */; };
 		F8596DEF2C458C9100F15A42 /* CoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8596DEE2C458C9100F15A42 /* CoinViewController.swift */; };
 		F8596DF12C458CFF00F15A42 /* CoinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8596DF02C458CFF00F15A42 /* CoinCoordinator.swift */; };
+		F85CD8532C72212900C56BC9 /* Coin.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F85CD8512C72212900C56BC9 /* Coin.xcdatamodeld */; };
+		F85CD8552C725A2300C56BC9 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85CD8542C725A2300C56BC9 /* CoreDataStack.swift */; };
 		F85EDC1C2C3941D40094BC15 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85EDC1B2C3941D40094BC15 /* NetworkService.swift */; };
 		F85EDC1E2C395D3A0094BC15 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85EDC1D2C395D3A0094BC15 /* Endpoint.swift */; };
 		F85EDC202C395DD10094BC15 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85EDC1F2C395DD10094BC15 /* NetworkError.swift */; };
@@ -69,6 +72,7 @@
 		F8445A162C2D6C530091BA34 /* CoinsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsListViewController.swift; sourceTree = "<group>"; };
 		F8445A1A2C2DABA70091BA34 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		F84C81CC2C481D4C0072623D /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
+		F85434D22C750A510097F4E4 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		F857F1AA2C43FE74003A2765 /* DelayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayManager.swift; sourceTree = "<group>"; };
 		F859111B2C2713AC0014B560 /* CryptoStatistics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoStatistics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F859111E2C2713AC0014B560 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +83,8 @@
 		F859112C2C2713B10014B560 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8596DEE2C458C9100F15A42 /* CoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewController.swift; sourceTree = "<group>"; };
 		F8596DF02C458CFF00F15A42 /* CoinCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCoordinator.swift; sourceTree = "<group>"; };
+		F85CD8522C72212900C56BC9 /* Coin.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Coin.xcdatamodel; sourceTree = "<group>"; };
+		F85CD8542C725A2300C56BC9 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		F85EDC1B2C3941D40094BC15 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		F85EDC1D2C395D3A0094BC15 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		F85EDC1F2C395DD10094BC15 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
@@ -140,7 +146,8 @@
 		F82725482C319951006AAE30 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				F8733BE62C5FC1600087262F /* CoinService.swift */,
+				F85434D12C750A110097F4E4 /* CoreData */,
+				F84EA1F32C73777F004A3160 /* Coin */,
 				F85EDC1A2C3941AD0094BC15 /* Networking */,
 				F85EDC182C3941970094BC15 /* Storage */,
 				F85EDC192C3941A40094BC15 /* Converter */,
@@ -211,6 +218,31 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		F84EA1F32C73777F004A3160 /* Coin */ = {
+			isa = PBXGroup;
+			children = (
+				F8733BE62C5FC1600087262F /* CoinService.swift */,
+			);
+			path = Coin;
+			sourceTree = "<group>";
+		};
+		F85434D02C74F5350097F4E4 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				F85CD8512C72212900C56BC9 /* Coin.xcdatamodeld */,
+				F85CD8542C725A2300C56BC9 /* CoreDataStack.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		F85434D12C750A110097F4E4 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				F85434D22C750A510097F4E4 /* CoreDataService.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		F857F1AC2C43FE78003A2765 /* Delay */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,6 +277,7 @@
 				F8F234B52C28590E00831D30 /* Sources */,
 				F86C0DC92C52BB53006D3DCE /* Navigation */,
 				F82725482C319951006AAE30 /* Service */,
+				F85434D02C74F5350097F4E4 /* CoreData */,
 				F8F234C52C28A9D600831D30 /* Module */,
 				F8F234AD2C284A1F00831D30 /* Supporting+files */,
 				F859112C2C2713B10014B560 /* Info.plist */,
@@ -610,6 +643,7 @@
 				F8445A1B2C2DABA70091BA34 /* AuthViewModel.swift in Sources */,
 				F857F1AB2C43FE74003A2765 /* DelayManager.swift in Sources */,
 				F882DDBF2C5E416D00BD32B9 /* DIContainerError.swift in Sources */,
+				F85CD8532C72212900C56BC9 /* Coin.xcdatamodeld in Sources */,
 				F82725472C31773F006AAE30 /* TextFieldError.swift in Sources */,
 				F85911232C2713AC0014B560 /* AuthViewController.swift in Sources */,
 				F863C8352C5790D100DA7780 /* CoinAssembly.swift in Sources */,
@@ -617,6 +651,7 @@
 				F85EDC222C39614D0094BC15 /* HTTPType.swift in Sources */,
 				F859111F2C2713AC0014B560 /* AppDelegate.swift in Sources */,
 				F827254A2C319977006AAE30 /* StorageService.swift in Sources */,
+				F85CD8552C725A2300C56BC9 /* CoreDataStack.swift in Sources */,
 				F8F234C12C2890D600831D30 /* TextFieldView.swift in Sources */,
 				F8F234B22C28507C00831D30 /* AuthCoordinator.swift in Sources */,
 				F8E71B4B2C29BC1F00E7C94C /* CustomButton.swift in Sources */,
@@ -630,6 +665,7 @@
 				F8596DF12C458CFF00F15A42 /* CoinCoordinator.swift in Sources */,
 				F86940DF2C46853200F69CFF /* CoinViewModel.swift in Sources */,
 				F85EDC1C2C3941D40094BC15 /* NetworkService.swift in Sources */,
+				F85434D32C750A510097F4E4 /* CoreDataService.swift in Sources */,
 				F827254C2C31A72C006AAE30 /* CoinsListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -847,6 +883,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F85CD8512C72212900C56BC9 /* Coin.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F85CD8522C72212900C56BC9 /* Coin.xcdatamodel */,
+			);
+			currentVersion = F85CD8522C72212900C56BC9 /* Coin.xcdatamodel */;
+			path = Coin.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F85911132C2713AC0014B560 /* Project object */;
 }

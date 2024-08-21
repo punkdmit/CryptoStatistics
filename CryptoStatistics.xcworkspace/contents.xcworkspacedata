@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:CryptoStatistics/Entity+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:CryptoStatistics/Entity+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:CryptoStatistics.xcodeproj">
    </FileRef>
    <FileRef

@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             switch isAuth {
             case true:
                 try coordinator.goToListViewController(in: window)
-            default:
+            case false:
                 try coordinator.start(in: window)
             }
             self.window = window

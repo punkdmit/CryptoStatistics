@@ -9,7 +9,7 @@ import Foundation
 
 protocol IModelConversionService {
     func convertServerCoinsModelToApp(_ coinsListResponse: CoinResponse, date: String) -> CoinsListTableViewCellModel
-    func convertServerCoinModelToApp(_ coinResponse: CoinResponse, date: String) -> CoinConvertedModel 
+    func convertServerCoinModelToApp(_ coinResponse: CoinResponse, date: String) -> CoinConvertedModel
 }
 
 //MARK: - ModelConversionService
