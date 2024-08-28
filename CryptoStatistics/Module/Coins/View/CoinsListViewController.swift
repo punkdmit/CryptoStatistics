@@ -134,7 +134,6 @@ private extension CoinsListViewController {
 
     func refreshControlPulled() {
         coinsListViewModel.fetchCoins(.update)
-//        coinsListViewModel.fetchCoinsFromNetwork(.update)
     }
 }
 

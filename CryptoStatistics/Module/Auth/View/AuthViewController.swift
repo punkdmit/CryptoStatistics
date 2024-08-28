@@ -8,11 +8,6 @@
 import UIKit
 import SnapKit
 
-////MARK: - AuthViewControllerDelegate
-//protocol AuthViewControllerDelegate: AnyObject {
-//    func didTapButton() throws
-//}
-
 final class AuthViewController: UIViewController {
 
     enum UserInfo {
@@ -101,6 +96,24 @@ extension AuthViewController: TextFieldViewDelegate {
             }
         }
     }
+
+    /// Для клавиатуры мака
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let inputText = (textField.text as? NSString)?.replacingCharacters(in: range, with: string)
+
+        if let customTextField = textField as? CustomTextField {
+            switch customTextField.key {
+            case .login:
+                authViewModel.userLogin = inputText
+            case .password:
+                authViewModel.userPassword = inputText
+            default:
+                return false
+            }
+        }
+        return true
+    }
+
 }
 
 //MARK: - AuthViewModelDelegate

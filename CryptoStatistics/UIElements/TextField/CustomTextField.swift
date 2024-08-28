@@ -10,7 +10,6 @@ import SnapKit
 
 // MARK: - CustomTextFieldDelegate
 protocol CustomTextFieldDelegate: AnyObject {
-//    func textFieldFinished()
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,

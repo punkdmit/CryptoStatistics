@@ -24,8 +24,8 @@ protocol ICoinsListViewModel {
     func fetchCoins(_ reason: RequestReason)
 
 //    func fetchCoinsFromNetwork(_ reason: RequestReason)
-//    func fetchCoins(_ reason: RequestReason) async throws
-//    var coinsListPublisher: AnyPublisher<[CoinsListTableViewCellModel], NetworkError> { get }
+    func fetchCoins(_ reason: RequestReason) async throws
+    var coinsListPublisher: AnyPublisher<[CoinsListTableViewCellModel], NetworkError> { get }
 //    func fetchCoinsCombine(_ reason: RequestReason)
 
     func sortCoins(by parameter: SortParameters)
@@ -108,10 +108,6 @@ extension CoinsListViewModel {
             fetchCoinsFromNetwork(reason)
         }
     }
-}
-
-//MARK: - Private networking methods
-private extension CoinsListViewModel {
 
     func fetchCoinsCombine(_ reason: RequestReason) {
         let publishers = Constants.coins.enumerated().map { (index, name) in
@@ -211,6 +207,10 @@ private extension CoinsListViewModel {
                                 .map { $0.1 }
                                 .compactMap { $0 }
     }
+}
+
+//MARK: - Private networking methods
+private extension CoinsListViewModel {
 
     func fetchCoinsFromNetwork(_ reason: RequestReason) {
         let isRequestEnabled = delayManager.performRequestIfNeeded { [weak self] in
