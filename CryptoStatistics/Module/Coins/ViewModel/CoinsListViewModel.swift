@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 import Combine
 
 //MARK: - SortParameters
@@ -22,10 +23,10 @@ protocol ICoinsListViewModel {
 
     func fetchCoins(_ reason: RequestReason)
 
-    func fetchCoins(_ reason: RequestReason) async throws
-
-    var coinsListPublisher: AnyPublisher<[CoinsListTableViewCellModel], NetworkError> { get }
-    func fetchCoinsCombine(_ reason: RequestReason)
+//    func fetchCoinsFromNetwork(_ reason: RequestReason)
+//    func fetchCoins(_ reason: RequestReason) async throws
+//    var coinsListPublisher: AnyPublisher<[CoinsListTableViewCellModel], NetworkError> { get }
+//    func fetchCoinsCombine(_ reason: RequestReason)
 
     func sortCoins(by parameter: SortParameters)
     func goToAuth()
@@ -64,6 +65,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
     private let delayManager: IDelayManager
     private let storageService: IStorageService
     private let coinService: ICoinService
+    private let coreDataService: ICoreDataService
 
     private let concurrentQueue = DispatchQueue(label: "queue", attributes: .concurrent)
     private var cancellable = Set<AnyCancellable>()
@@ -76,7 +78,8 @@ final class CoinsListViewModel: ICoinsListViewModel {
         networkService: INetworkService,
         delayManager: IDelayManager,
         storageService: IStorageService,
-        coinService: ICoinService
+        coinService: ICoinService,
+        coreDataService: ICoreDataService
     ) {
         self.coinsListCoordinator = coinsListCoordinator
         self.modelConversationService = modelConversationService
@@ -84,11 +87,31 @@ final class CoinsListViewModel: ICoinsListViewModel {
         self.delayManager = delayManager
         self.storageService = storageService
         self.coinService = coinService
+        self.coreDataService = coreDataService
     }
 }
 
 //MARK: - Networking methods
 extension CoinsListViewModel {
+
+    func fetchCoins(_ reason: RequestReason) {
+        switch reason {
+        case .firstLoad:
+            let isAuth = storageService.load()
+            switch isAuth {
+            case true:
+                fetchCoinFromCoreData()
+            case false:
+                fetchCoinsFromNetwork(reason)
+            }
+        case .update:
+            fetchCoinsFromNetwork(reason)
+        }
+    }
+}
+
+//MARK: - Private networking methods
+private extension CoinsListViewModel {
 
     func fetchCoinsCombine(_ reason: RequestReason) {
         let publishers = Constants.coins.enumerated().map { (index, name) in
@@ -189,7 +212,7 @@ extension CoinsListViewModel {
                                 .compactMap { $0 }
     }
 
-    func fetchCoins(_ reason: RequestReason) {
+    func fetchCoinsFromNetwork(_ reason: RequestReason) {
         let isRequestEnabled = delayManager.performRequestIfNeeded { [weak self] in
             guard let self = self else { return }
             if reason == .firstLoad {
@@ -206,6 +229,7 @@ extension CoinsListViewModel {
                     guard let self = self else { return }
                     switch result {
                     case .success(let result):
+
                         let coinsListTableViewCellModel = convertToLocaleModel(result)
                         if let coinsListTableViewCellModel {
                             concurrentQueue.async(flags: .barrier) {
@@ -232,6 +256,7 @@ extension CoinsListViewModel {
                 self.concurrentQueue.sync {
                     self.convertedCoinsArray = temporaryCoinsArray.compactMap { $0 }
                 }
+                self.saveCoinToCoreData(self.convertedCoinsArray)
                 self.didUpdateCoinsList?()
                 switch reason {
                 case .firstLoad:
@@ -245,6 +270,10 @@ extension CoinsListViewModel {
             self.switchViewState?(.updated)
         }
     }
+}
+
+//MARK: - Navigation
+extension CoinsListViewModel {
 
     func sortCoins(by parameter: SortParameters) {
         var currentCoinsList: [CoinsListTableViewCellModel] = []
@@ -264,10 +293,6 @@ extension CoinsListViewModel {
         }
         didUpdateCoinsList?()
     }
-}
-
-//MARK: - Navigation
-extension CoinsListViewModel {
 
     func goToAuth() {
         do {
@@ -275,7 +300,7 @@ extension CoinsListViewModel {
         } catch {
             print(error)
         }
-        storageService.save(isAuth: true)
+        storageService.save(isAuth: false)
 
     }
 
@@ -298,5 +323,25 @@ private extension CoinsListViewModel {
         let dateString = dateFormatter.string(from: date)
         let localModel = modelConversationService.convertServerCoinsModelToApp(coinsListResponse, date: dateString)
         return localModel
+    }
+}
+
+//MARK: - CoreData
+private extension CoinsListViewModel {
+
+    func saveCoinToCoreData(_ coins: [CoinsListTableViewCellModel]) {
+        coreDataService.saveCoinToCoreData(coins)
+    }
+
+    func fetchCoinFromCoreData() {
+        do {
+            try coreDataService.fetchCoinFromCoreData { coins in
+                concurrentQueue.async(flags: .barrier) { [weak self] in
+                    self?.convertedCoinsArray = coins
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

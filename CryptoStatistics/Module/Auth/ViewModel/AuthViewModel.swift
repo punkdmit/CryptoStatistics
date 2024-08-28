@@ -62,7 +62,9 @@ extension AuthViewModel {
         } catch {
             print(error)
         }
-        storageService.save(isAuth: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.storageService.save(isAuth: true)
+        }
     }
 
     func moveToCoinsListViewController() throws {
