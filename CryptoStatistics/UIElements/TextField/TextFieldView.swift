@@ -11,6 +11,11 @@ import UIKit
 //MARK: TextFieldViewDelegate
 protocol TextFieldViewDelegate: AnyObject {
     func textFieldDidEndEditing(_ textField: UITextField)
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool
 }
 
 final class TextFieldView: UIView {
@@ -84,7 +89,11 @@ extension TextFieldView: CustomTextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         hideError()
-        return true
+        return delegate?.textField(
+            textField,
+            shouldChangeCharactersIn: range,
+            replacementString: string
+        ) ?? true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
