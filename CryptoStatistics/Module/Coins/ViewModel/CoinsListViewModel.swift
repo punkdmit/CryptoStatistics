@@ -40,7 +40,7 @@ final class CoinsListViewModel: ICoinsListViewModel {
 
     private enum Constants {
         static let outputDateFormat = "dd.MM.yyyy hh:mm a"
-        static let coins = ["btc", "eth", "tron", "luna", "polkadot", "dogecoin", "tether", "stellar", "cardano", "xrp"]
+        static let coins = ["btc", "eth", "tron", "polkadot", "dogecoin", "tether", "stellar", "cardano", "xrp"]
     }
 
     var convertedCoinsArray: [CoinsListTableViewCellModel] = []
